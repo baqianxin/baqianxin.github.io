@@ -3,13 +3,13 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
+title: baqianxin
 subtitle: ''
 description: ''
-keywords:
-author: John Doe
-language: en
-timezone: ''
+keywords: 开放
+author: baqianxin
+language: zh-Hans
+timezone: 'Asia/shanghai'
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
