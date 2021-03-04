@@ -1,275 +1,76 @@
-<!DOCTYPE html>
-<html lang="zh-Hans">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Cache-Control" content="no-siteapp">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-    
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    
-    <meta name="renderer" content="webkit"/>
-    <meta name="force-rendering" content="webkit"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <script>if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode)) window.location.href="https://support.dmeng.net/upgrade-your-browser.html?referrer="+encodeURIComponent(window.location.href); </script>
-    
-    
-        <link rel="shortcut icon" href="/images/favicon.ico">
-    
-     
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.2.30/dist/vuetify.min.css" rel="stylesheet">
-    
-<link rel="stylesheet" href="/css/main.css">
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="Gitlab CI&#x2F;CD 集成 SonarQube 扫描服务       [TOC] 环境：Docker  gitlab gitlab-runner sonarqube postgresql                    使用示例       123456789101112131415# .gitlab-ci.ymlstages:  - sonar-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gitlab CI&#x2F;CD 集成 SonarQube 扫描服务">
+<meta property="og:url" content="http://baqianxin.github.io/2020/09/15/Gitlab-CI-CD-%E9%9B%86%E6%88%90-SonarQube-%E6%89%AB%E6%8F%8F%E6%9C%8D%E5%8A%A1/index.html">
+<meta property="og:site_name" content="baqianxin">
+<meta property="og:description" content="Gitlab CI&#x2F;CD 集成 SonarQube 扫描服务       [TOC] 环境：Docker  gitlab gitlab-runner sonarqube postgresql                    使用示例       123456789101112131415# .gitlab-ci.ymlstages:  - sonar-">
+<meta property="og:locale">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/E6645A1C4C6E47B78402FED13B5F369A?method=download&shareKey=814d1fda2ad408c56016122cef5c90fa">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/4DE448654E9F41D7A1CC7AE6A8E375CF?method=download&shareKey=90a053673cc128ed3be7b9cf566b5bc6">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/B4C37DC2CA36420180D3CC8C00A1DC4D?method=download&shareKey=d17249b1446369fff0a6912c6f824eb7">
+<meta property="article:published_time" content="2020-09-15T08:26:48.000Z">
+<meta property="article:modified_time" content="2021-03-04T02:23:53.652Z">
+<meta property="article:author" content="baqianxin">
+<meta property="article:tag" content="开放">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/E6645A1C4C6E47B78402FED13B5F369A?method=download&shareKey=814d1fda2ad408c56016122cef5c90fa"><title>Gitlab CI/CD 集成 SonarQube 扫描服务 | baqianxin</title><link ref="canonical" href="http://baqianxin.github.io/2020/09/15/Gitlab-CI-CD-%E9%9B%86%E6%88%90-SonarQube-%E6%89%AB%E6%8F%8F%E6%9C%8D%E5%8A%A1/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"Copy","copySuccess":"Copy Success","copyError":"Copy Error"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
 
-    
-    
-
-
-
-
-
-
-
-    
-    
-          
-
-    
-    
-    
-    
-    <title>
-        
-            Gitlab CI/CD 集成 SonarQube 扫描服务 | baqianxin
-        
-    </title>
-    
-    
-<meta name="generator" content="Hexo 5.4.0"></head>
-<body>
-    <div id="app">
-        <v-app>
-            <v-content id="page">
-                <v-container fluid>
-                    <v-row>
-                        <v-col cols="2" class="d-none d-md-block">
-                            <div id="sidebar" class="float-right">
-    <a href="/" rel="home">
-        <v-avatar size=96>
-            <img id="logo" src="/images/avatar.webp">     
-        </v-avatar> 
-    </a>
-    <v-divider></v-divider>
-    <div class="mini-menu">
-        <v-btn icon href="/">
-            <v-icon>home</v-icon>
-        </v-btn>
-        <v-btn icon href="/categories/">
-            <v-icon>folder</v-icon>
-        </v-btn>
-        <v-btn icon href="/tags/">
-            <v-icon>bookmark</v-icon>
-        </v-btn>
-        <v-btn icon @click="SetNightMode">
-            <v-icon>{{ nightMode }}</v-icon>
-        </v-btn>
-    </div>
-    <v-list id="main-menu" class="font-weight-bold" flat>
-        
-            
-            <v-list-item href="/archives/" link>
-            <v-list-item-icon><v-icon>archive</v-icon></v-list-item-icon>
-            <v-list-item-content>
-                Archives
-            </v-list-item-content>
-            </v-list-item>
-        
-            
-            <v-list-item href="/about/" link>
-            <v-list-item-icon><v-icon>account_circle</v-icon></v-list-item-icon>
-            <v-list-item-content>
-                About
-            </v-list-item-content>
-            </v-list-item>
-        
-            
-            <v-list-item href="https://garybear.cn/" link>
-            <v-list-item-icon><v-icon>rss_feed</v-icon></v-list-item-icon>
-            <v-list-item-content>
-                我的博客
-            </v-list-item-content>
-            </v-list-item>
-        
-            
-            <v-list-item href="https://garybear.cn/hexo-theme-insulin/doc/#/" link>
-            <v-list-item-icon><v-icon>insert_drive_file</v-icon></v-list-item-icon>
-            <v-list-item-content>
-                说明文档
-            </v-list-item-content>
-            </v-list-item>
-        
-    </v-list>
-    <v-divider></v-divider>
-    
-        <div class="post-toc">
-            <a href="/2020/09/15/Gitlab-CI-CD-%E9%9B%86%E6%88%90-SonarQube-%E6%89%AB%E6%8F%8F%E6%9C%8D%E5%8A%A1/" class="toc-header">Table of Contents</a>
-            <div class="toc-content">
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Gitlab-CI-CD-%E9%9B%86%E6%88%90-SonarQube-%E6%89%AB%E6%8F%8F%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.</span> <span class="toc-text">Gitlab CI&#x2F;CD 集成 SonarQube 扫描服务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.1.</span> <span class="toc-text">使用示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sonar-%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.2.</span> <span class="toc-text">Sonar 服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Sonar-%E9%9B%86%E6%88%90-GitLab"><span class="toc-number">1.2.1.</span> <span class="toc-text">Sonar 集成 GitLab</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gitlab-runner-%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.3.</span> <span class="toc-text">Gitlab-runner 服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Gitlab-runner-%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92"><span class="toc-number">1.3.1.</span> <span class="toc-text">Gitlab-runner 容器编排</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E9%97%AE%E9%A2%98"><span class="toc-number">1.3.2.</span> <span class="toc-text">注意问题</span></a></li></ol></li></ol></li></ol>
-            </div>
-        </div>
-    
-
-    <div id="footer">
-        <div class="footer-social">
-            
-                
-                <v-btn icon href="mailto:kb1000fx@gmail.com" target="_blank">
-                    <v-icon>fas fa-envelope</v-icon>
-                </v-btn>
-            
-                
-                <v-btn icon href="https://github.com/kb1000fx" target="_blank">
-                    <v-icon>fab fa-github</v-icon>
-                </v-btn>
-            
-                
-                <v-btn icon href="https://steamcommunity.com/profiles/76561198346798163" target="_blank">
-                    <v-icon>fab fa-steam</v-icon>
-                </v-btn>
-            
-                
-                <v-btn icon href="https://weibo.com/kb1000fx" target="_blank">
-                    <v-icon>fab fa-weibo</v-icon>
-                </v-btn>
-            
-        </div>
-        <v-divider></v-divider>
-        <div class="footer-content">
-            
-                <span id="busuanzi_container_site_uv" style="display: none;"> 
-                    Total Visitors <span id="busuanzi_value_site_uv"></span>
-                </span>
-                <br>
-            
-            <span>Theme: <a target="_blank" rel="noopener" href="https://github.com/kb1000fx/hexo-theme-insulin">Insulin</a></span><br>
-            <span>Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a></span><br>
-            <span>
-                &copy; 2015 - 2021 
-                baqianxin
-            </span>
-        </div>
-    </div>
-</div>
-
-                        </v-col>
-                        <v-col cols="12" md="10">
-                            <v-row>
-  <v-col cols="12" md="8" align-self="end">
-    <div id="site-header">
-      <div id="site-title">
-        <a href="/" rel="home">baqianxin</a>
-      </div>
-      <div id="site-description"></div>
-      <div id="mobile-menu" class="d-block d-md-none">
-        <v-text-field label="请输入关键字" data-src="search.xml" v-model="searchHeaderValue" prepend-inner-icon="search" clearable clear-icon="clear" @keydown.enter="EnterSearch(searchHeaderValue,false)"></v-text-field>
-        <div class="mobile-mini-menu">
-          <v-btn icon href="/">
-              <v-icon>home</v-icon>
-          </v-btn>
-          <v-btn icon href="/categories/">
-              <v-icon>folder</v-icon>
-          </v-btn>
-          <v-btn icon href="/tags/">
-              <v-icon>bookmark</v-icon>
-          </v-btn>
-          <v-btn icon @click="SetNightMode">
-              <v-icon>{{ nightMode }}</v-icon>
-          </v-btn>
-          
-            
-            <v-btn icon href="/archives/">
-              <v-icon>archive</v-icon>
-            </v-btn>
-          
-            
-            <v-btn icon href="/about/">
-              <v-icon>account_circle</v-icon>
-            </v-btn>
-          
-            
-            <v-btn icon href="https://garybear.cn/">
-              <v-icon>rss_feed</v-icon>
-            </v-btn>
-          
-            
-            <v-btn icon href="https://garybear.cn/hexo-theme-insulin/doc/#/">
-              <v-icon>insert_drive_file</v-icon>
-            </v-btn>
-          
-        </div>
-      </div>    
-    </div>
-  </v-col>  
-  <v-col cols="4" align-self="end" class="d-none d-md-block">
-    <v-col align-self="end">
-      <v-text-field label="请输入关键字" data-src="search.xml" v-model="searchHeaderValue" prepend-icon="search" clearable clear-icon="clear" @keydown.enter="EnterSearch(searchHeaderValue,false)"></v-text-field>
-    </v-col> 
-  </v-col>
-</v-row>
-
-                            <v-card class="elevation-2 post-card">
-    
-    
-        <div class="post-header">
-  <a class="post-header-title font-weight-medium" href="/2020/09/15/Gitlab-CI-CD-%E9%9B%86%E6%88%90-SonarQube-%E6%89%AB%E6%8F%8F%E6%9C%8D%E5%8A%A1/">Gitlab CI/CD 集成 SonarQube 扫描服务</a>
-  <div class="post-header-meta">   
-    <span>
-      <v-icon color="">event</v-icon>
-      Posted on:&nbsp;2020-09-15
-    </span>
-    <span>
-      <v-icon color="">event_available</v-icon>
-      Edited on:&nbsp;2021-03-04
-    </span>
-    <span>
-      <v-icon color="">folder</v-icon>
-      In:&nbsp;Uncategorized
-    </span>
-    
-    <span>
-      <v-icon color="">visibility</v-icon>
-      Views:&nbsp;<span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span></span>
-    </span>
-    
-  </div>
-</div>
-
-    
-    
-    
-    
-    <div class="post-content typo">
-        <h1 id="Gitlab-CI-CD-集成-SonarQube-扫描服务"><a href="#Gitlab-CI-CD-集成-SonarQube-扫描服务" class="headerlink" title="Gitlab CI/CD 集成 SonarQube 扫描服务"></a>Gitlab CI/CD 集成 SonarQube 扫描服务</h1><p>[TOC]</p>
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">Home</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">Archives</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">baqianxin</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Gitlab CI/CD 集成 SonarQube 扫描服务</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">Created</span><span class="post-meta-item__value">2020-09-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2021-03-04</span></span></div></header><div class="post-body">
+        <h1 id="Gitlab-CI-CD-集成-SonarQube-扫描服务"   >
+          <a href="#Gitlab-CI-CD-集成-SonarQube-扫描服务" class="heading-link"><i class="fas fa-link"></i></a><a href="#Gitlab-CI-CD-集成-SonarQube-扫描服务" class="headerlink" title="Gitlab CI/CD 集成 SonarQube 扫描服务"></a>Gitlab CI/CD 集成 SonarQube 扫描服务</h1>
+      <p>[TOC]</p>
 <pre><code>环境：Docker
 
 gitlab
 gitlab-runner
 sonarqube
-postgresql</code></pre><h2 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h2><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .gitlab-ci.yml</span></span><br><span class="line"></span><br><span class="line"><span class="attr">stages:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">sonar-scanner</span></span><br><span class="line"><span class="attr">sonar:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">sonar-scanner</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">sonar-scanner</span> </span><br><span class="line">      <span class="string">-Dsonar.projectKey=cd_demo</span> </span><br><span class="line">      <span class="string">-Dsonar.sources=.</span> </span><br><span class="line">      <span class="string">-Dsonar.host.url=http://10.18.27.80:9823</span> </span><br><span class="line">      <span class="string">-Dsonar.login=a138bc0d36c7130bb30aebbaffbc44148b6ab8e4</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">sonar</span></span><br><span class="line">  <span class="attr">when:</span> <span class="string">always</span></span><br></pre></td></tr></table></figure>
+postgresql</code></pre>
+        <h2 id="使用示例"   >
+          <a href="#使用示例" class="heading-link"><i class="fas fa-link"></i></a><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h2>
+      <figure class="highlight yml"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .gitlab-ci.yml</span></span><br><span class="line"></span><br><span class="line"><span class="attr">stages:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">sonar-scanner</span></span><br><span class="line"><span class="attr">sonar:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">sonar-scanner</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">sonar-scanner</span> </span><br><span class="line">      <span class="string">-Dsonar.projectKey=cd_demo</span> </span><br><span class="line">      <span class="string">-Dsonar.sources=.</span> </span><br><span class="line">      <span class="string">-Dsonar.host.url=http://10.18.27.80:9823</span> </span><br><span class="line">      <span class="string">-Dsonar.login=a138bc0d36c7130bb30aebbaffbc44148b6ab8e4</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">sonar</span></span><br><span class="line">  <span class="attr">when:</span> <span class="string">always</span></span><br></pre></td></tr></table></div></figure>
 
 
 
-<h2 id="Sonar-服务"><a href="#Sonar-服务" class="headerlink" title="Sonar 服务"></a>Sonar 服务</h2><ul>
-<li><a target="_blank" rel="noopener" href="http://note.youdao.com/noteshare?id=61644a0153db0c34075be66430fbe3c4">SonarQube 代码检查服务部署</a></li>
+
+        <h2 id="Sonar-服务"   >
+          <a href="#Sonar-服务" class="heading-link"><i class="fas fa-link"></i></a><a href="#Sonar-服务" class="headerlink" title="Sonar 服务"></a>Sonar 服务</h2>
+      <ul>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://note.youdao.com/noteshare?id=61644a0153db0c34075be66430fbe3c4" >SonarQube 代码检查服务部署</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
 </ul>
-<h3 id="Sonar-集成-GitLab"><a href="#Sonar-集成-GitLab" class="headerlink" title="Sonar 集成 GitLab"></a>Sonar 集成 GitLab</h3><ul>
+
+        <h3 id="Sonar-集成-GitLab"   >
+          <a href="#Sonar-集成-GitLab" class="heading-link"><i class="fas fa-link"></i></a><a href="#Sonar-集成-GitLab" class="headerlink" title="Sonar 集成 GitLab"></a>Sonar 集成 GitLab</h3>
+      <ul>
 <li>admin 安装 git 插件 <code>Administration</code>-&gt;<code>marketpalce</code>-&gt; <code>search git</code>-&gt;<code>restart server</code></li>
-<li><code>ALM Intergrations</code><br><img src="https://note.youdao.com/yws/api/personal/file/E6645A1C4C6E47B78402FED13B5F369A?method=download&shareKey=814d1fda2ad408c56016122cef5c90fa" alt="sonar-gitlab"></li>
-<li><code>Gitlab Application</code> <code>Token-Secret</code><br><img src="https://note.youdao.com/yws/api/personal/file/4DE448654E9F41D7A1CC7AE6A8E375CF?method=download&shareKey=90a053673cc128ed3be7b9cf566b5bc6" alt="Gitlab Application T-S"></li>
+<li><code>ALM Intergrations</code><br><img   src="https://note.youdao.com/yws/api/personal/file/E6645A1C4C6E47B78402FED13B5F369A?method=download&shareKey=814d1fda2ad408c56016122cef5c90fa" style=""  alt="sonar-gitlab"></li>
+<li><code>Gitlab Application</code> <code>Token-Secret</code><br><img   src="https://note.youdao.com/yws/api/personal/file/4DE448654E9F41D7A1CC7AE6A8E375CF?method=download&shareKey=90a053673cc128ed3be7b9cf566b5bc6" style=""  alt="Gitlab Application T-S"></li>
 </ul>
-<h2 id="Gitlab-runner-服务"><a href="#Gitlab-runner-服务" class="headerlink" title="Gitlab-runner 服务"></a>Gitlab-runner 服务</h2><ul>
+
+        <h2 id="Gitlab-runner-服务"   >
+          <a href="#Gitlab-runner-服务" class="heading-link"><i class="fas fa-link"></i></a><a href="#Gitlab-runner-服务" class="headerlink" title="Gitlab-runner 服务"></a>Gitlab-runner 服务</h2>
+      <ul>
 <li>构建 <code>gitlab-runner</code> 镜像，集成 <code>node</code> ,<code>sonar-scanner</code></li>
 <li>注册 <code>Runner</code> ：<ul>
 <li><code>gitlab-runner</code> <code>register</code></li>
@@ -281,13 +82,19 @@ postgresql</code></pre><h2 id="使用示例"><a href="#使用示例" class="head
 </li>
 <li>开启 <code>Runner</code> 不匹配 <code>tag</code> 执行,在 <code>CI/CD</code> -&gt; <code>runner</code> 的设置里</li>
 </ul>
-<p><img src="https://note.youdao.com/yws/api/personal/file/B4C37DC2CA36420180D3CC8C00A1DC4D?method=download&shareKey=d17249b1446369fff0a6912c6f824eb7" alt="注册"></p>
+<p><img   src="https://note.youdao.com/yws/api/personal/file/B4C37DC2CA36420180D3CC8C00A1DC4D?method=download&shareKey=d17249b1446369fff0a6912c6f824eb7" style=""  alt="注册"></p>
 <hr>
-<h3 id="Gitlab-runner-容器编排"><a href="#Gitlab-runner-容器编排" class="headerlink" title="Gitlab-runner 容器编排"></a>Gitlab-runner 容器编排</h3><pre><code>docker-compose.yml</code></pre><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">runner:</span></span><br><span class="line">  <span class="attr">container_name:</span> <span class="string">&#x27;gitlab-runner&#x27;</span></span><br><span class="line">  <span class="attr">build:</span> <span class="string">../../server/gitlab-runner/</span></span><br><span class="line">  <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;8093:8093&#x27;</span></span><br><span class="line">  <span class="comment"># volumes:</span></span><br><span class="line">  <span class="comment">#   - &#x27;$GITLAB_HOME/gitlab-runner/config:/etc/gitlab-runner&#x27;</span></span><br><span class="line">  <span class="comment">#   - &#x27;/var/run/docker.sock:/var/run/docker.sock&#x27;</span></span><br><span class="line"><span class="attr">web:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">&#x27;gitlab/gitlab-ee:latest&#x27;</span></span><br><span class="line">  <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">  <span class="attr">hostname:</span> <span class="string">&#x27;gitlab.example.com&#x27;</span></span><br><span class="line">  <span class="attr">environment:</span></span><br><span class="line">    <span class="attr">GITLAB_OMNIBUS_CONFIG:</span> <span class="string">|</span></span><br><span class="line">      <span class="string">external_url</span> <span class="string">&#x27;http://gitlab.example.com:8929&#x27;</span></span><br><span class="line">      <span class="string">gitlab_rails[&#x27;gitlab_shell_ssh_port&#x27;]</span> <span class="string">=</span> <span class="number">2224</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;8929:8929&#x27;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;2224:22&#x27;</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;$GITLAB_HOME/config:/etc/gitlab&#x27;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;$GITLAB_HOME/logs:/var/log/gitlab&#x27;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;$GITLAB_HOME/data:/var/opt/gitlab&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<pre><code>gitlab-runner/Dockerfile</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">FROM gitlab&#x2F;gitlab-runner:latest</span><br><span class="line"></span><br><span class="line">LABEL MAINTAINER&#x3D;baqianxin@360.cn</span><br><span class="line"></span><br><span class="line">RUN export LANG&#x3D;en_US.UTF-8  &amp;&amp; export LANGUAGE&#x3D;en_US</span><br><span class="line"></span><br><span class="line">RUN apt-get update &amp;&amp;  apt-get  install -y  nodejs vim unzip </span><br><span class="line">RUN cd &#x2F;opt &amp;&amp; \ </span><br><span class="line">wget https:&#x2F;&#x2F;binaries.sonarsource.com&#x2F;Distribution&#x2F;sonar-scanner-cli&#x2F;sonar-scanner-cli-4.0.0.1744-linux.zip &amp;&amp; \</span><br><span class="line">unzip sonar-scanner-cli-4.0.0.1744-linux.zip &amp;&amp; \ </span><br><span class="line">mv sonar-scanner-4.0.0.1744-linux sonar-scanner</span><br><span class="line"></span><br><span class="line">RUN  ln -s &#x2F;opt&#x2F;sonar-scanner&#x2F;bin&#x2F;sonar-scanner &#x2F;usr&#x2F;bin&#x2F;sonar-scanner &amp;&amp; sonar-scanner -v</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+        <h3 id="Gitlab-runner-容器编排"   >
+          <a href="#Gitlab-runner-容器编排" class="heading-link"><i class="fas fa-link"></i></a><a href="#Gitlab-runner-容器编排" class="headerlink" title="Gitlab-runner 容器编排"></a>Gitlab-runner 容器编排</h3>
+      <pre><code>docker-compose.yml</code></pre><figure class="highlight yml"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">runner:</span></span><br><span class="line">  <span class="attr">container_name:</span> <span class="string">&#x27;gitlab-runner&#x27;</span></span><br><span class="line">  <span class="attr">build:</span> <span class="string">../../server/gitlab-runner/</span></span><br><span class="line">  <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;8093:8093&#x27;</span></span><br><span class="line">  <span class="comment"># volumes:</span></span><br><span class="line">  <span class="comment">#   - &#x27;$GITLAB_HOME/gitlab-runner/config:/etc/gitlab-runner&#x27;</span></span><br><span class="line">  <span class="comment">#   - &#x27;/var/run/docker.sock:/var/run/docker.sock&#x27;</span></span><br><span class="line"><span class="attr">web:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">&#x27;gitlab/gitlab-ee:latest&#x27;</span></span><br><span class="line">  <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">  <span class="attr">hostname:</span> <span class="string">&#x27;gitlab.example.com&#x27;</span></span><br><span class="line">  <span class="attr">environment:</span></span><br><span class="line">    <span class="attr">GITLAB_OMNIBUS_CONFIG:</span> <span class="string">|</span></span><br><span class="line">      <span class="string">external_url</span> <span class="string">&#x27;http://gitlab.example.com:8929&#x27;</span></span><br><span class="line">      <span class="string">gitlab_rails[&#x27;gitlab_shell_ssh_port&#x27;]</span> <span class="string">=</span> <span class="number">2224</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;8929:8929&#x27;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;2224:22&#x27;</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;$GITLAB_HOME/config:/etc/gitlab&#x27;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;$GITLAB_HOME/logs:/var/log/gitlab&#x27;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;$GITLAB_HOME/data:/var/opt/gitlab&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
 
-<h3 id="注意问题"><a href="#注意问题" class="headerlink" title="注意问题"></a>注意问题</h3><ul>
+<pre><code>gitlab-runner/Dockerfile</code></pre><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">FROM gitlab&#x2F;gitlab-runner:latest</span><br><span class="line"></span><br><span class="line">LABEL MAINTAINER&#x3D;baqianxin@360.cn</span><br><span class="line"></span><br><span class="line">RUN export LANG&#x3D;en_US.UTF-8  &amp;&amp; export LANGUAGE&#x3D;en_US</span><br><span class="line"></span><br><span class="line">RUN apt-get update &amp;&amp;  apt-get  install -y  nodejs vim unzip </span><br><span class="line">RUN cd &#x2F;opt &amp;&amp; \ </span><br><span class="line">wget https:&#x2F;&#x2F;binaries.sonarsource.com&#x2F;Distribution&#x2F;sonar-scanner-cli&#x2F;sonar-scanner-cli-4.0.0.1744-linux.zip &amp;&amp; \</span><br><span class="line">unzip sonar-scanner-cli-4.0.0.1744-linux.zip &amp;&amp; \ </span><br><span class="line">mv sonar-scanner-4.0.0.1744-linux sonar-scanner</span><br><span class="line"></span><br><span class="line">RUN  ln -s &#x2F;opt&#x2F;sonar-scanner&#x2F;bin&#x2F;sonar-scanner &#x2F;usr&#x2F;bin&#x2F;sonar-scanner &amp;&amp; sonar-scanner -v</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="注意问题"   >
+          <a href="#注意问题" class="heading-link"><i class="fas fa-link"></i></a><a href="#注意问题" class="headerlink" title="注意问题"></a>注意问题</h3>
+      <ul>
 <li>系统语言需设置 LCALL LANGUAGE LANG=en_US.UTF-8</li>
 </ul>
 <pre><code>[submodule &quot;golang/example&quot;]
@@ -295,77 +102,11 @@ postgresql</code></pre><h2 id="使用示例"><a href="#使用示例" class="head
     url = git@github.com:baqianxin/examples.git
 [submodule &quot;spider/chineseocr_lite&quot;]
     url = git@github.com:baqianxin/chineseocr_lite.git
-    active = true</code></pre>
-    </div>
-    <!--文末结束语-->
-    
-        <div style="text-align:center;color: #ccc;font-size:24px;"> --- 本文结束 <i class="fas fa-heart"></i> The End --- </div>
-    
-    <!--页脚广告-->
-    
-    <v-divider></v-divider>
-    
-    <div class="post-nav">             
-        
-            <div class="post-nav-button float-left">
-                <v-icon>chevron_left</v-icon>
-                <a class="font-weight-bold text-left" href="/2020/09/15/DNS-%E8%A7%A3%E6%9E%90keywords/">
-                    DNS 解析keywords
-                </a>
-            </div>
-              
-          
-            <div class="post-nav-button float-right">
-                <a class="font-weight-bold text-right" href="/2020/06/18/Python%E6%8A%93%E5%8F%96%E9%A1%B5%E9%9D%A2%E6%95%B0%E6%8D%AE%E5%88%86%E8%AF%8D%E7%BB%9F%E8%AE%A1%E5%B1%95%E7%A4%BA/">      
-                    Python抓取页面数据分词统计展示
-                </a>
-                <v-icon>chevron_right</v-icon>
-            </div>
-        
-    </div>
-</v-card>
-
-
-
-        
-                            <div id="mobile-footer" class="d-block d-md-none">
-                                <v-divider></v-divider>
-                                <div id="mobile-footer-content">
-                                    <span>Theme: <a target="_blank" rel="noopener" href="https://github.com/kb1000fx/hexo-theme-insulin">Insulin</a> &nbsp; Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a></span><br>
-                                    <span> &copy; 2015 - 2021 baqianxin</span>
-                                </div>
-                            </div>                   
-                        </v-col>                                            
-                    </v-row>
-                </v-container>
-            </v-content>
-        </v-app>
-    </div>
-    
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
-<script src="https://cdn.jsdelivr.net/npm/vuetify@2.2.30"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/js-base64@3.5.2/base64.min.js"></script>
-
-<script src="/js/main.js"></script>
-
-
-
-
-    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@8.4.8/dist/mermaid.min.js"></script>
-    <script>mermaid.initialize({
-        startOnLoad: true,
-        theme: "default"
-    });</script>
-
-
-
-
-
-</body>
-</html>
+    active = true</code></pre></div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ END ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">Author: </span><span class="copyright-author__value"><a href="http://baqianxin.github.io">baqianxin</a></span></div><div class="copyright-link"><span class="copyright-link__name">Link: </span><span class="copyright-link__value"><a href="http://baqianxin.github.io/2020/09/15/Gitlab-CI-CD-%E9%9B%86%E6%88%90-SonarQube-%E6%89%AB%E6%8F%8F%E6%9C%8D%E5%8A%A1/">http://baqianxin.github.io/2020/09/15/Gitlab-CI-CD-%E9%9B%86%E6%88%90-SonarQube-%E6%89%AB%E6%8F%8F%E6%9C%8D%E5%8A%A1/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">Copyright: </span><span class="copyright-notice__value">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> unless stating additionally</span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/09/15/DNS-%E8%A7%A3%E6%9E%90keywords/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">DNS 解析keywords</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/06/18/Python%E6%8A%93%E5%8F%96%E9%A1%B5%E9%9D%A2%E6%95%B0%E6%8D%AE%E5%88%86%E8%AF%8D%E7%BB%9F%E8%AE%A1%E5%B1%95%E7%A4%BA/"><span class="paginator-prev__text">Python抓取页面数据分词统计展示</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">Catalog</span><span class="sidebar-nav-ov">Overview</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Gitlab-CI-CD-%E9%9B%86%E6%88%90-SonarQube-%E6%89%AB%E6%8F%8F%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.</span> <span class="toc-text">
+          Gitlab CI&#x2F;CD 集成 SonarQube 扫描服务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.1.</span> <span class="toc-text">
+          使用示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sonar-%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.2.</span> <span class="toc-text">
+          Sonar 服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Sonar-%E9%9B%86%E6%88%90-GitLab"><span class="toc-number">1.2.1.</span> <span class="toc-text">
+          Sonar 集成 GitLab</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gitlab-runner-%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.3.</span> <span class="toc-text">
+          Gitlab-runner 服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Gitlab-runner-%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92"><span class="toc-number">1.3.1.</span> <span class="toc-text">
+          Gitlab-runner 容器编排</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E9%97%AE%E9%A2%98"><span class="toc-number">1.3.2.</span> <span class="toc-text">
+          注意问题</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">hello world</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">10</div><div class="sidebar-ov-state-item__name">Archives</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="Creative Commons" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">You have read </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>baqianxin</span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span><span> v5.4.0</span><span class="footer__devider">|</span><span>Theme - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.6.2</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script></body></html>
