@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <script>if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode)) window.location.href="https://support.dmeng.net/upgrade-your-browser.html?referrer="+encodeURIComponent(window.location.href); </script>
+    
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+     
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.2.30/dist/vuetify.min.css" rel="stylesheet">
+    
+<link rel="stylesheet" href="/css/main.css">
+
+    
+    
+
+
+
+
+
+
+
+    
+    
+          
+
+    
+    
+    
+    
+    <title>
+        
+            TensorFlow:鸢尾花品种分析demo | baqianxin
+        
+    </title>
+    
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    <div id="app">
+        <v-app>
+            <v-content id="page">
+                <v-container fluid>
+                    <v-row>
+                        <v-col cols="2" class="d-none d-md-block">
+                            <div id="sidebar" class="float-right">
+    <a href="/" rel="home">
+        <v-avatar size=96>
+            <img id="logo" src="/images/avatar.webp">     
+        </v-avatar> 
+    </a>
+    <v-divider></v-divider>
+    <div class="mini-menu">
+        <v-btn icon href="/">
+            <v-icon>home</v-icon>
+        </v-btn>
+        <v-btn icon href="/categories/">
+            <v-icon>folder</v-icon>
+        </v-btn>
+        <v-btn icon href="/tags/">
+            <v-icon>bookmark</v-icon>
+        </v-btn>
+        <v-btn icon @click="SetNightMode">
+            <v-icon>{{ nightMode }}</v-icon>
+        </v-btn>
+    </div>
+    <v-list id="main-menu" class="font-weight-bold" flat>
+        
+            
+            <v-list-item href="/archives/" link>
+            <v-list-item-icon><v-icon>archive</v-icon></v-list-item-icon>
+            <v-list-item-content>
+                Archives
+            </v-list-item-content>
+            </v-list-item>
+        
+            
+            <v-list-item href="/about/" link>
+            <v-list-item-icon><v-icon>account_circle</v-icon></v-list-item-icon>
+            <v-list-item-content>
+                About
+            </v-list-item-content>
+            </v-list-item>
+        
+            
+            <v-list-item href="https://garybear.cn/" link>
+            <v-list-item-icon><v-icon>rss_feed</v-icon></v-list-item-icon>
+            <v-list-item-content>
+                我的博客
+            </v-list-item-content>
+            </v-list-item>
+        
+            
+            <v-list-item href="https://garybear.cn/hexo-theme-insulin/doc/#/" link>
+            <v-list-item-icon><v-icon>insert_drive_file</v-icon></v-list-item-icon>
+            <v-list-item-content>
+                说明文档
+            </v-list-item-content>
+            </v-list-item>
+        
+    </v-list>
+    <v-divider></v-divider>
+    
+        <div class="post-toc">
+            <a href="/2020/09/15/TensorFlow-%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%93%81%E7%A7%8D%E5%88%86%E6%9E%90demo/" class="toc-header">Table of Contents</a>
+            <div class="toc-content">
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%95%88%E6%9E%9C"><span class="toc-number">1.</span> <span class="toc-text">运行效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83"><span class="toc-number">2.</span> <span class="toc-text">运行环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="toc-number">3.</span> <span class="toc-text">实现步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.1.</span> <span class="toc-text">创建模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE"><span class="toc-number">3.2.</span> <span class="toc-text">加载数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E6%8D%9F%E5%A4%B1%E5%92%8C%E6%A2%AF%E5%BA%A6%E5%87%BD%E6%95%B0"><span class="toc-number">3.3.</span> <span class="toc-text">定义损失和梯度函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E4%BC%98%E5%8C%96%E5%99%A8%EF%BC%8C%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="toc-number">3.4.</span> <span class="toc-text">设置优化器，计数器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%AE%AD%E7%BB%83"><span class="toc-number">3.5.</span> <span class="toc-text">自定义训练</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%B0%E5%BD%95"><span class="toc-number">3.6.</span> <span class="toc-text">记录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E5%B9%B6%E6%A3%80%E6%B5%8B"><span class="toc-number">3.7.</span> <span class="toc-text">获取测试数据并检测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#compile%E5%92%8C%E4%BF%9D%E5%AD%98model"><span class="toc-number">3.8.</span> <span class="toc-text">compile和保存model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%A8%A1%E5%9E%8B%E6%A3%80%E6%B5%8B%E6%9C%AA%E7%9F%A5%E6%95%B0%E6%8D%AEtrain-test-py"><span class="toc-number">3.9.</span> <span class="toc-text">使用模型检测未知数据train_test.py</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E9%97%AE%E9%A2%98-amp-%E6%80%9D%E8%B7%AF"><span class="toc-number">4.</span> <span class="toc-text">遇到问题&amp;思路</span></a></li></ol>
+            </div>
+        </div>
+    
+
+    <div id="footer">
+        <div class="footer-social">
+            
+                
+                <v-btn icon href="mailto:kb1000fx@gmail.com" target="_blank">
+                    <v-icon>fas fa-envelope</v-icon>
+                </v-btn>
+            
+                
+                <v-btn icon href="https://github.com/kb1000fx" target="_blank">
+                    <v-icon>fab fa-github</v-icon>
+                </v-btn>
+            
+                
+                <v-btn icon href="https://steamcommunity.com/profiles/76561198346798163" target="_blank">
+                    <v-icon>fab fa-steam</v-icon>
+                </v-btn>
+            
+                
+                <v-btn icon href="https://weibo.com/kb1000fx" target="_blank">
+                    <v-icon>fab fa-weibo</v-icon>
+                </v-btn>
+            
+        </div>
+        <v-divider></v-divider>
+        <div class="footer-content">
+            
+                <span id="busuanzi_container_site_uv" style="display: none;"> 
+                    Total Visitors <span id="busuanzi_value_site_uv"></span>
+                </span>
+                <br>
+            
+            <span>Theme: <a target="_blank" rel="noopener" href="https://github.com/kb1000fx/hexo-theme-insulin">Insulin</a></span><br>
+            <span>Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a></span><br>
+            <span>
+                &copy; 2015 - 2021 
+                baqianxin
+            </span>
+        </div>
+    </div>
+</div>
+
+                        </v-col>
+                        <v-col cols="12" md="10">
+                            <v-row>
+  <v-col cols="12" md="8" align-self="end">
+    <div id="site-header">
+      <div id="site-title">
+        <a href="/" rel="home">baqianxin</a>
+      </div>
+      <div id="site-description"></div>
+      <div id="mobile-menu" class="d-block d-md-none">
+        <v-text-field label="请输入关键字" data-src="search.xml" v-model="searchHeaderValue" prepend-inner-icon="search" clearable clear-icon="clear" @keydown.enter="EnterSearch(searchHeaderValue,false)"></v-text-field>
+        <div class="mobile-mini-menu">
+          <v-btn icon href="/">
+              <v-icon>home</v-icon>
+          </v-btn>
+          <v-btn icon href="/categories/">
+              <v-icon>folder</v-icon>
+          </v-btn>
+          <v-btn icon href="/tags/">
+              <v-icon>bookmark</v-icon>
+          </v-btn>
+          <v-btn icon @click="SetNightMode">
+              <v-icon>{{ nightMode }}</v-icon>
+          </v-btn>
+          
+            
+            <v-btn icon href="/archives/">
+              <v-icon>archive</v-icon>
+            </v-btn>
+          
+            
+            <v-btn icon href="/about/">
+              <v-icon>account_circle</v-icon>
+            </v-btn>
+          
+            
+            <v-btn icon href="https://garybear.cn/">
+              <v-icon>rss_feed</v-icon>
+            </v-btn>
+          
+            
+            <v-btn icon href="https://garybear.cn/hexo-theme-insulin/doc/#/">
+              <v-icon>insert_drive_file</v-icon>
+            </v-btn>
+          
+        </div>
+      </div>    
+    </div>
+  </v-col>  
+  <v-col cols="4" align-self="end" class="d-none d-md-block">
+    <v-col align-self="end">
+      <v-text-field label="请输入关键字" data-src="search.xml" v-model="searchHeaderValue" prepend-icon="search" clearable clear-icon="clear" @keydown.enter="EnterSearch(searchHeaderValue,false)"></v-text-field>
+    </v-col> 
+  </v-col>
+</v-row>
+
+                            <v-card class="elevation-2 post-card">
+    
+    
+        <div class="post-header">
+  <a class="post-header-title font-weight-medium" href="/2020/09/15/TensorFlow-%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%93%81%E7%A7%8D%E5%88%86%E6%9E%90demo/">TensorFlow:鸢尾花品种分析demo</a>
+  <div class="post-header-meta">   
+    <span>
+      <v-icon color="">event</v-icon>
+      Posted on:&nbsp;2020-09-15
+    </span>
+    <span>
+      <v-icon color="">event_available</v-icon>
+      Edited on:&nbsp;2021-03-04
+    </span>
+    <span>
+      <v-icon color="">folder</v-icon>
+      In:&nbsp;Uncategorized
+    </span>
+    
+    <span>
+      <v-icon color="">visibility</v-icon>
+      Views:&nbsp;<span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span></span>
+    </span>
+    
+  </div>
+</div>
+
+    
+    
+    
+    
+    <div class="post-content typo">
+        <h2 id="运行效果"><a href="#运行效果" class="headerlink" title="运行效果"></a>运行效果</h2><p><img src="https://note.youdao.com/yws/public/resource/1f52c84118d87ca95bb96cf11951ce88/xmlnote/DEE9C090352A4BBF8281CA269958696D/8343" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">root@433ad0b9b2e7:&#x2F;usr&#x2F;src&#x2F;app# python train2.py </span><br><span class="line">Loss test: 1.3583741188049316</span><br><span class="line">Step: 0, Initial Loss: 1.3583741188049316</span><br><span class="line">Step: 1,         Loss: 1.2449184656143188</span><br><span class="line">Epoch 000: Loss: 1.061, Accuracy: 46.667%</span><br><span class="line">Epoch 050: Loss: 0.418, Accuracy: 82.500%</span><br><span class="line">Epoch 100: Loss: 0.307, Accuracy: 94.167%</span><br><span class="line">Epoch 150: Loss: 0.221, Accuracy: 97.500%</span><br><span class="line">Epoch 200: Loss: 0.162, Accuracy: 96.667%</span><br><span class="line">Test set accuracy: 96.667%</span><br><span class="line">root@433ad0b9b2e7:&#x2F;usr&#x2F;src&#x2F;app# </span><br><span class="line">root@433ad0b9b2e7:&#x2F;usr&#x2F;src&#x2F;app# python train2_test.py </span><br><span class="line">Example 0 prediction: Iris setosa (98.3%)</span><br><span class="line">Example 1 prediction: Iris versicolor (82.5%)</span><br><span class="line">Example 2 prediction: Iris virginica (75.2%)</span><br><span class="line">root@433ad0b9b2e7:&#x2F;usr&#x2F;src&#x2F;app# </span><br></pre></td></tr></table></figure>
+
+<h2 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h2><ul>
+<li>Python:3.7.4</li>
+<li>TensorFlow:1.14.0</li>
+<li>Matplotlib</li>
+<li>数据来源：<ul>
+<li>训练  <a target="_blank" rel="noopener" href="http://download.tensorflow.org/data/iris_training.csv">http://download.tensorflow.org/data/iris_training.csv</a></li>
+<li>测试  <a target="_blank" rel="noopener" href="http://download.tensorflow.org/data/iris_test.csv">http://download.tensorflow.org/data/iris_test.csv</a></li>
+<li>检测  <code>自定义</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h2><h3 id="创建模型"><a href="#创建模型" class="headerlink" title="创建模型"></a>创建模型</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> absolute_import, division, print_function</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> tensorflow.contrib.eager <span class="keyword">as</span> tfe</span><br><span class="line">os.environ[<span class="string">&#x27;TF_CPP_MIN_LOG_LEVEL&#x27;</span>] = <span class="string">&#x27;2&#x27;</span></span><br><span class="line">tf.compat.v1.enable_eager_execution()</span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;TensorFlow version: &#123;&#125;&quot;</span>.<span class="built_in">format</span>(tf.version.VERSION))</span><br><span class="line">print(<span class="string">&quot;Eager execution: &#123;&#125;&quot;</span>.<span class="built_in">format</span>(tf.executing_eagerly()))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">用于训练生成鸢尾花iris识别模型</span></span><br><span class="line"><span class="string">@训练图表：./data/images/iris_*.png</span></span><br><span class="line"><span class="string">@模型文件：./data/model/iris-model</span></span><br><span class="line"><span class="string">@使用环境：</span></span><br><span class="line"><span class="string">    Python: 3.7.4</span></span><br><span class="line"><span class="string">    TensorFlow version: 1.14.0</span></span><br><span class="line"><span class="string">    Eager execution: True</span></span><br><span class="line"><span class="string">@作者：baqianxin@163.com</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># 创建model</span></span><br><span class="line"></span><br><span class="line">model = tf.keras.Sequential([</span><br><span class="line">    tf.keras.layers.Dense(<span class="number">10</span>, activation=tf.nn.relu, input_shape=(<span class="number">4</span>,)), </span><br><span class="line">    tf.keras.layers.Dense(<span class="number">10</span>, activation=tf.nn.relu),</span><br><span class="line">    tf.keras.layers.Dense(<span class="number">3</span>)</span><br><span class="line">])</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="加载数据"><a href="#加载数据" class="headerlink" title="加载数据"></a>加载数据</h3><blockquote>
+<p>加载的远端CSV数据，使用tf.data.experimental.make_csv_dataset转化为Dataset</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">train_dataset_url = <span class="string">&quot;http://download.tensorflow.org/data/iris_training.csv&quot;</span></span><br><span class="line"></span><br><span class="line">train_dataset_fp = tf.keras.utils.get_file(fname=os.path.basename(train_dataset_url),</span><br><span class="line">                                           origin=train_dataset_url)</span><br><span class="line"></span><br><span class="line"><span class="comment"># print(&quot;Local copy of the dataset file: &#123;&#125;&quot;.format(train_dataset_fp))</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># column order in CSV file</span></span><br><span class="line">column_names = [<span class="string">&#x27;sepal_length&#x27;</span>, <span class="string">&#x27;sepal_width&#x27;</span>,</span><br><span class="line">                <span class="string">&#x27;petal_length&#x27;</span>, <span class="string">&#x27;petal_width&#x27;</span>, <span class="string">&#x27;species&#x27;</span>]</span><br><span class="line"></span><br><span class="line">feature_names = column_names[:-<span class="number">1</span>]</span><br><span class="line">label_name = column_names[-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># print(&quot;Features: &#123;&#125;&quot;.format(feature_names))</span></span><br><span class="line"><span class="comment"># print(&quot;Label: &#123;&#125;&quot;.format(label_name))</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义标签</span></span><br><span class="line">class_names = [<span class="string">&#x27;Iris setosa&#x27;</span>, <span class="string">&#x27;Iris versicolor&#x27;</span>, <span class="string">&#x27;Iris virginica&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个 tf.data.Dataset</span></span><br><span class="line">batch_size = <span class="number">32</span></span><br><span class="line"></span><br><span class="line">train_dataset = tf.data.experimental.make_csv_dataset(</span><br><span class="line">    train_dataset_fp,</span><br><span class="line">    batch_size,</span><br><span class="line">    column_names=column_names,</span><br><span class="line">    label_name=label_name,</span><br><span class="line">    num_epochs=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="定义损失和梯度函数"><a href="#定义损失和梯度函数" class="headerlink" title="定义损失和梯度函数"></a>定义损失和梯度函数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.定义损失 和梯度函数</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">loss</span>(<span class="params">model, x, y</span>):</span></span><br><span class="line">    y_ = model(x)</span><br><span class="line">    <span class="keyword">return</span> tf.compat.v1.losses.sparse_softmax_cross_entropy(labels=y, logits=y_)</span><br><span class="line"></span><br><span class="line">l = loss(model, features, labels)</span><br><span class="line">print(<span class="string">&quot;Loss test: &#123;&#125;&quot;</span>.<span class="built_in">format</span>(l))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.定义用于优化模型的梯度</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">grad</span>(<span class="params">model, inputs, targets</span>):</span></span><br><span class="line">    <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">        loss_value = loss(model, inputs, targets)</span><br><span class="line">    <span class="keyword">return</span> loss_value, tape.gradient(loss_value, model.trainable_variables)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="设置优化器，计数器"><a href="#设置优化器，计数器" class="headerlink" title="设置优化器，计数器"></a>设置优化器，计数器</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置优化器，计数器</span></span><br><span class="line">optimizer = tf.compat.v1.train.GradientDescentOptimizer(learning_rate=<span class="number">0.01</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义训练"><a href="#自定义训练" class="headerlink" title="自定义训练"></a>自定义训练</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">train_loss_results = []</span><br><span class="line">train_accuracy_results = []</span><br><span class="line"></span><br><span class="line">num_epochs = <span class="number">201</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(num_epochs):</span><br><span class="line">    epoch_loss_avg = tfe.metrics.Mean()</span><br><span class="line">    epoch_accuracy = tfe.metrics.Accuracy()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Training loop - using batches of 32</span></span><br><span class="line">    <span class="keyword">for</span> x, y <span class="keyword">in</span> train_dataset:</span><br><span class="line">        <span class="comment"># Optimize the model</span></span><br><span class="line">        loss_value, grads = grad(model, x, y)</span><br><span class="line">        optimizer.apply_gradients(<span class="built_in">zip</span>(grads, model.variables),</span><br><span class="line">                                  global_step)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Track progress</span></span><br><span class="line">        epoch_loss_avg(loss_value)  <span class="comment"># add current batch loss</span></span><br><span class="line">        <span class="comment"># compare predicted label to actual label</span></span><br><span class="line">        epoch_accuracy(tf.argmax(model(x), axis=<span class="number">1</span>, output_type=tf.int32), y)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># end epoch</span></span><br><span class="line">    train_loss_results.append(epoch_loss_avg.result())</span><br><span class="line">    train_accuracy_results.append(epoch_accuracy.result())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> epoch % <span class="number">50</span> == <span class="number">0</span>:</span><br><span class="line">        print(<span class="string">&quot;Epoch &#123;:03d&#125;: Loss: &#123;:.3f&#125;, Accuracy: &#123;:.3%&#125;&quot;</span>.<span class="built_in">format</span>(epoch,</span><br><span class="line">                                                                    epoch_loss_avg.result(),</span><br><span class="line">                                                                    epoch_accuracy.result()))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="记录"><a href="#记录" class="headerlink" title="记录"></a>记录</h3><blockquote>
+<p>把训练过程中的损失与正确率都记录到<code>train_loss_results</code>,<code>train_accuracy_results</code>数组中了，在通过pyplot输出到可视化图表文件</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">fig, axes = plt.subplots(<span class="number">2</span>, sharex=<span class="literal">True</span>, figsize=(<span class="number">12</span>, <span class="number">8</span>))</span><br><span class="line">fig.suptitle(<span class="string">&#x27;Training Metrics&#x27;</span>)</span><br><span class="line"></span><br><span class="line">axes[<span class="number">0</span>].set_ylabel(<span class="string">&quot;Loss&quot;</span>, fontsize=<span class="number">14</span>)</span><br><span class="line">axes[<span class="number">0</span>].plot(train_loss_results)</span><br><span class="line"></span><br><span class="line">axes[<span class="number">1</span>].set_ylabel(<span class="string">&quot;Accuracy&quot;</span>, fontsize=<span class="number">14</span>)</span><br><span class="line">axes[<span class="number">1</span>].set_xlabel(<span class="string">&quot;Epoch&quot;</span>, fontsize=<span class="number">14</span>)</span><br><span class="line">axes[<span class="number">1</span>].plot(train_accuracy_results)</span><br><span class="line">plt.savefig(<span class="string">&quot;./data/images/iris_loss.png&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="获取测试数据并检测"><a href="#获取测试数据并检测" class="headerlink" title="获取测试数据并检测"></a>获取测试数据并检测</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取检测数据</span></span><br><span class="line">test_url = <span class="string">&quot;http://download.tensorflow.org/data/iris_test.csv&quot;</span></span><br><span class="line"></span><br><span class="line">test_fp = tf.keras.utils.get_file(fname=os.path.basename(test_url),</span><br><span class="line">                                  origin=test_url)</span><br><span class="line"></span><br><span class="line">test_dataset = tf.data.experimental.make_csv_dataset(</span><br><span class="line">    test_fp,</span><br><span class="line">    batch_size,</span><br><span class="line">    column_names=column_names,</span><br><span class="line">    label_name=<span class="string">&#x27;species&#x27;</span>,</span><br><span class="line">    num_epochs=<span class="number">1</span>,</span><br><span class="line">    shuffle=<span class="literal">False</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 其他方式格式化数据</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pack_features_vector</span>(<span class="params">features, labels</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Pack the features into a single array.&quot;&quot;&quot;</span></span><br><span class="line">    features = tf.stack(<span class="built_in">list</span>(features.values()), axis=<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> features, labels</span><br><span class="line">    </span><br><span class="line">test_dataset = test_dataset.<span class="built_in">map</span>(pack_features_vector)</span><br><span class="line">test_accuracy = tfe.metrics.Accuracy()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (x, y) <span class="keyword">in</span> test_dataset:</span><br><span class="line">  logits = model(x)</span><br><span class="line">  prediction = tf.argmax(logits, axis=<span class="number">1</span>, output_type=tf.int32)</span><br><span class="line">  test_accuracy(prediction, y)</span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;Test set accuracy: &#123;:.3%&#125;&quot;</span>.<span class="built_in">format</span>(test_accuracy.result()))</span><br></pre></td></tr></table></figure>
+
+<h3 id="compile和保存model"><a href="#compile和保存model" class="headerlink" title="compile和保存model"></a>compile和保存model</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># compile 用于设定训练过程</span></span><br><span class="line">model.<span class="built_in">compile</span>(optimizer=tf.keras.optimizers.Adam(),</span><br><span class="line">                loss=tf.keras.losses.sparse_categorical_crossentropy,</span><br><span class="line">                metrics=[<span class="string">&#x27;accuracy&#x27;</span>])</span><br><span class="line"><span class="comment"># 全量保存模型</span></span><br><span class="line">model.save(<span class="string">&quot;./data/model/iris-model&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用模型检测未知数据train-test-py"><a href="#使用模型检测未知数据train-test-py" class="headerlink" title="使用模型检测未知数据train_test.py"></a>使用模型检测未知数据<code>train_test.py</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> absolute_import, division, print_function</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> tensorflow.contrib.eager <span class="keyword">as</span> tfe</span><br><span class="line">os.environ[<span class="string">&#x27;TF_CPP_MIN_LOG_LEVEL&#x27;</span>] = <span class="string">&#x27;2&#x27;</span></span><br><span class="line">tf.compat.v1.enable_eager_execution()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载训练好的模型</span></span><br><span class="line">file_path = <span class="string">&#x27;./data/model&#x27;</span></span><br><span class="line">model = tf.keras.models.load_model(file_path + <span class="string">&quot;/iris-model&quot;</span>)</span><br><span class="line"><span class="comment"># model.summary()</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义标签</span></span><br><span class="line">class_names = [<span class="string">&#x27;Iris setosa&#x27;</span>, <span class="string">&#x27;Iris versicolor&#x27;</span>, <span class="string">&#x27;Iris virginica&#x27;</span>]</span><br><span class="line"></span><br><span class="line">predict_dataset = tf.convert_to_tensor([</span><br><span class="line">    [<span class="number">5.1</span>, <span class="number">3.3</span>, <span class="number">1.7</span>, <span class="number">0.5</span>, ],</span><br><span class="line">    [<span class="number">5.9</span>, <span class="number">3.0</span>, <span class="number">4.2</span>, <span class="number">1.5</span>, ],</span><br><span class="line">    [<span class="number">6.9</span>, <span class="number">3.1</span>, <span class="number">5.4</span>, <span class="number">2.1</span>]</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">predictions = model(predict_dataset)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i, logits <span class="keyword">in</span> <span class="built_in">enumerate</span>(predictions):</span><br><span class="line">    class_idx = tf.argmax(logits).numpy()</span><br><span class="line">    p = tf.nn.softmax(logits)[class_idx]</span><br><span class="line">    name = class_names[class_idx]</span><br><span class="line">    print(<span class="string">&quot;Example &#123;&#125; prediction: &#123;&#125; (&#123;:4.1f&#125;%)&quot;</span>.<span class="built_in">format</span>(i, name, <span class="number">100</span>*p))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="遇到问题-amp-思路"><a href="#遇到问题-amp-思路" class="headerlink" title="遇到问题&amp;思路"></a>遇到问题&amp;思路</h2><p>不好意思没能力提出问题，很多参数都看不懂，只是模拟操作一下</p>
+<ul>
+<li><strong>大致就是生成数据集</strong>：可能比较复杂需要格式化</li>
+<li><strong>定义标签</strong>：一个常量数组</li>
+<li><strong>创建模型</strong>：配置层数及一些输入输出参数</li>
+<li><strong>定义损失与梯度函数</strong>：用来检测是否训练到位了</li>
+<li><strong>定义优化器</strong>，计数器：同名意</li>
+<li><strong><em>可以单个数据测试下这些参数</em></strong></li>
+<li><strong>自定义训练方法</strong>：记录下训练的次数，每一次训练的结果（）</li>
+<li><strong>输出训练数据</strong>：可视化很直白表示模型当前数据下是否训练的合理</li>
+<li><strong><em>再使用准备好的测试数据在这个训练过的模型上测试</em></strong></li>
+<li><strong>然后就是保存</strong>：有几种，配置，权重，全量保存</li>
+<li>++<strong>最后就是拿未知数据来检测保存的模型是否准确了y</strong>++</li>
+</ul>
+
+    </div>
+    <!--文末结束语-->
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;"> --- 本文结束 <i class="fas fa-heart"></i> The End --- </div>
+    
+    <!--页脚广告-->
+    
+    <v-divider></v-divider>
+    
+    <div class="post-nav">             
+        
+            <div class="post-nav-button float-left">
+                <v-icon>chevron_left</v-icon>
+                <a class="font-weight-bold text-left" href="/2020/09/15/Go-Web%E6%8E%A5%E5%8F%A3%E5%AE%9E%E6%97%B6%E9%99%90%E6%B5%81/">
+                    Go:Web接口实时限流
+                </a>
+            </div>
+              
+          
+            <div class="post-nav-button float-right">
+                <a class="font-weight-bold text-right" href="/2020/09/15/ELK-Nginx%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95/">      
+                    ELK:Nginx日志记录
+                </a>
+                <v-icon>chevron_right</v-icon>
+            </div>
+        
+    </div>
+</v-card>
+
+
+
+        
+                            <div id="mobile-footer" class="d-block d-md-none">
+                                <v-divider></v-divider>
+                                <div id="mobile-footer-content">
+                                    <span>Theme: <a target="_blank" rel="noopener" href="https://github.com/kb1000fx/hexo-theme-insulin">Insulin</a> &nbsp; Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a></span><br>
+                                    <span> &copy; 2015 - 2021 baqianxin</span>
+                                </div>
+                            </div>                   
+                        </v-col>                                            
+                    </v-row>
+                </v-container>
+            </v-content>
+        </v-app>
+    </div>
+    
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.2.30"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-base64@3.5.2/base64.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@8.4.8/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({
+        startOnLoad: true,
+        theme: "default"
+    });</script>
+
+
+
+
+
+</body>
+</html>
