@@ -348,6 +348,117 @@ postgresql</code></pre>
 ]]></content>
   </entry>
   <entry>
+    <title>Golang使用WebSocket+ChromeDP实现实时页面监控</title>
+    <url>/2021/03/05/Golang%E4%BD%BF%E7%94%A8WebSocket-ChromeDP%E5%AE%9E%E7%8E%B0%E5%AE%9E%E6%97%B6%E9%A1%B5%E9%9D%A2%E7%9B%91%E6%8E%A7/</url>
+    <content><![CDATA[
+        <h1 id="WebSocket-Chromedp实现页面实时监控"   >
+          <a href="#WebSocket-Chromedp实现页面实时监控" class="heading-link"><i class="fas fa-link"></i></a><a href="#WebSocket-Chromedp实现页面实时监控" class="headerlink" title="WebSocket+Chromedp实现页面实时监控"></a>WebSocket+Chromedp实现页面实时监控</h1>
+      
+        <h2 id="出发点"   >
+          <a href="#出发点" class="heading-link"><i class="fas fa-link"></i></a><a href="#出发点" class="headerlink" title="出发点"></a>出发点</h2>
+      <ul>
+<li><p>理解与应用 Golang 的 Gorouting</p>
+</li>
+<li><p>Channel 通道 <code>chan</code> </p>
+</li>
+<li><p>WebSocket </p>
+</li>
+<li><p>chromedp </p>
+<blockquote>
+<p>查看 socket 使用时,想到能否结合应用下 chan, 正好又看到chromedp 的文章.就思考能否通过 websocket + chan 实现 headless chrome 监控页面信息</p>
+</blockquote>
+
+        <h2 id="Socket"   >
+          <a href="#Socket" class="heading-link"><i class="fas fa-link"></i></a><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h2>
+      <p>网络中的 Socket 并不是什么协议，而是为了使用 TCP，UDP 而抽象出来的一层 API，它是位于应用层和传输层之间的一个抽象层。Socket 是对 TCP/IP 的封装；<br>Golang 本身net 包 即可实现 Socket 服务 .</p>
+
+        <h2 id="WebSocket"   >
+          <a href="#WebSocket" class="heading-link"><i class="fas fa-link"></i></a><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h2>
+      <p>WebSocket 是一种在单个 TCP 连接上进行全双工通信的协议. 因为不了解WebSocket导致闹了个笑话所以列出来</p>
+<ul>
+<li>WebSocket 与 HTTP都是基于TCP/IP协议上的,可靠性传输协议,都是应用层协议.</li>
+<li>WebSocket是双向通信协议，模拟Socket协议，可以双向发送或接受信息。HTTP是单向的。</li>
+<li>WebSocket是需要握手进行建立连接的。<ul>
+<li>1.浏览器、服务器建立TCP连接，三次握手。这是通信的基础，传输控制层，若失败后续都不执行。</li>
+<li>2.TCP连接成功后，浏览器通过HTTP协议向服务器传送WebSocket支持的版本号等信息。（开始前的HTTP握手）</li>
+<li>3.服务器收到客户端的握手请求后，同样采用HTTP协议回馈数据。</li>
+<li>4.当收到了连接成功的消息后，通过TCP通道进行传输通信。</li>
+</ul>
+</li>
+</ul>
+
+        <h2 id="chromedp"   >
+          <a href="#chromedp" class="heading-link"><i class="fas fa-link"></i></a><a href="#chromedp" class="headerlink" title="chromedp"></a>chromedp</h2>
+      <p>用于驱动 支持  Chrome DevTools Protocol 的浏览器</p>
+<blockquote>
+<p>Package chromedp is a faster, simpler way to drive browsers supporting the <code>Chrome DevTools Protocol</code>in Go without external dependencies (like Selenium or PhantomJS).</p>
+</blockquote>
+<span id="more"></span>
+
+
+        <h3 id="Examples"   >
+          <a href="#Examples" class="heading-link"><i class="fas fa-link"></i></a><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h3>
+      </li>
+</ul>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>Example</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><span class="exturl"><a class="exturl__link"   href="https://github.com/chromedp/examples/tree/master/click2" >click2</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></td>
+<td>use a selector to click on an element</td>
+</tr>
+<tr>
+<td><span class="exturl"><a class="exturl__link"   href="https://github.com/chromedp/examples/tree/master/click" >click</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></td>
+<td>use a selector to click on an element</td>
+</tr>
+<tr>
+<td><span class="exturl"><a class="exturl__link"   href="https://github.com/chromedp/examples/tree/master/screenshot" >screenshot</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></td>
+<td>take a screenshot of a specific element and of the entire browser viewport</td>
+</tr>
+</tbody></table></div>
+
+        <h2 id="功能逻辑"   >
+          <a href="#功能逻辑" class="heading-link"><i class="fas fa-link"></i></a><a href="#功能逻辑" class="headerlink" title="功能逻辑"></a>功能逻辑</h2>
+      <ul>
+<li>main </li>
+<li>go func GR1 开启浏览器<ul>
+<li>GR1 常驻截屏,写入 全局 chan </li>
+</ul>
+</li>
+<li>go func GR2 开启消息读取<ul>
+<li>GR2 读取到消息后,压缩图片信息,</li>
+<li>GR2 遍历当前所有WebSocket连接对象 发送图片数据(blob|base64) </li>
+</ul>
+</li>
+<li>启动 WebSocket 服务,接受 客户端连接,插入到 全局 连接 Map 中<ul>
+<li>接受客户端的点击事件,等比计算,映射到 chromedp 监控的页面中<figure class="highlight plain"><div class="table-container"><table><tr><td class="code"><pre><span class="line">graph LR</span><br><span class="line">A--&gt;B</span><br></pre></td></tr></table></div></figure>
+
+
+</li>
+</ul>
+</li>
+</ul>
+
+        <h2 id="实现代码"   >
+          <a href="#实现代码" class="heading-link"><i class="fas fa-link"></i></a><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h2>
+      
+        <h3 id="Golang-Server"   >
+          <a href="#Golang-Server" class="heading-link"><i class="fas fa-link"></i></a><a href="#Golang-Server" class="headerlink" title="Golang Server"></a>Golang Server</h3>
+       <figure class="highlight plain"><div class="table-container"><table><tr><td class="code"><pre><span class="line"> package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;context&quot;</span><br><span class="line">	&quot;encoding&#x2F;base64&quot;</span><br><span class="line">	&quot;flag&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;io&#x2F;ioutil&quot;</span><br><span class="line">	&quot;log&quot;</span><br><span class="line">	&quot;net&#x2F;http&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line"></span><br><span class="line">	&quot;github.com&#x2F;chromedp&#x2F;chromedp&quot;</span><br><span class="line">	&quot;github.com&#x2F;gorilla&#x2F;websocket&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var addr &#x3D; flag.String(&quot;addr&quot;, &quot;localhost:9999&quot;, &quot;http service address&quot;)</span><br><span class="line"></span><br><span class="line">var upgrader &#x3D; websocket.Upgrader&#123;&#125; &#x2F;&#x2F; use default options</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 用来记录所有的客户端连接</span><br><span class="line">var ConnMap map[string]*websocket.Conn</span><br><span class="line"></span><br><span class="line">var MAX_WATCH_TIME &#x3D; 500</span><br><span class="line"></span><br><span class="line">const DATE_TIME_FORMAT &#x3D; &quot;2006-01-02 15:04:05&quot;</span><br><span class="line">const DATE_FORMAT &#x3D; &quot;2006-01-02&quot;</span><br><span class="line">const DATE_FORMAT_NUM &#x3D; &quot;20060102&quot;</span><br><span class="line"></span><br><span class="line">var CH_SC &#x3D; make(chan []byte)</span><br><span class="line"></span><br><span class="line">func echo(w http.ResponseWriter, r *http.Request) &#123;</span><br><span class="line">	&#x2F;&#x2F; 允许跨域</span><br><span class="line">	upgrader.CheckOrigin &#x3D; func(r *http.Request) bool &#123; return true &#125;</span><br><span class="line">	c, err :&#x3D; upgrader.Upgrade(w, r, nil)</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		log.Print(&quot;upgrade:&quot;, err)</span><br><span class="line">		return</span><br><span class="line">	&#125;</span><br><span class="line">	defer c.Close()</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F; 新连接加入map</span><br><span class="line">	ConnMap[c.RemoteAddr().String()] &#x3D; c</span><br><span class="line"></span><br><span class="line">	for &#123;</span><br><span class="line">		mt, message, err :&#x3D; c.ReadMessage()</span><br><span class="line">		if err !&#x3D; nil &#123;</span><br><span class="line">			log.Println(&quot;read:&quot;, err)</span><br><span class="line">			break</span><br><span class="line">		&#125;</span><br><span class="line">		log.Printf(&quot;recv: %s&quot;, message)</span><br><span class="line">		err &#x3D; c.WriteMessage(mt, message)</span><br><span class="line">		if err !&#x3D; nil &#123;</span><br><span class="line">			log.Println(&quot;write:&quot;, err)</span><br><span class="line">			break</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	flag.Parse()</span><br><span class="line">	log.SetFlags(0)</span><br><span class="line">	begin :&#x3D; time.Now()</span><br><span class="line">	ConnMap &#x3D; make(map[string]*websocket.Conn)</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F; 启动 chrome 并开启截屏进程</span><br><span class="line">	go func() &#123;</span><br><span class="line">		opts :&#x3D; append(chromedp.DefaultExecAllocatorOptions[:],</span><br><span class="line">			chromedp.Flag(&quot;headless&quot;, true),</span><br><span class="line">			chromedp.Flag(&quot;disable-gpu&quot;, false),</span><br><span class="line">			chromedp.Flag(&quot;enable-automation&quot;, false),</span><br><span class="line">			chromedp.Flag(&quot;disable-extensions&quot;, true),</span><br><span class="line">		)</span><br><span class="line"></span><br><span class="line">		allocCtx, cancel :&#x3D; chromedp.NewExecAllocator(context.Background(), opts...)</span><br><span class="line">		defer cancel()</span><br><span class="line"></span><br><span class="line">		&#x2F;&#x2F; create context</span><br><span class="line">		ctx, cancel :&#x3D; chromedp.NewContext(allocCtx, chromedp.WithLogf(log.Printf))</span><br><span class="line">		defer cancel()</span><br><span class="line"></span><br><span class="line">		urlstr :&#x3D; &#96;https:&#x2F;&#x2F;youku.com&#x2F;&#96;</span><br><span class="line">		&#x2F;&#x2F; 需要截图的元素，支持CSS selector以及XPath query</span><br><span class="line">		selector :&#x3D; &#96;#m_15319&#96; &#x2F;&#x2F;&#96;#m_2556&#96; &#x2F;&#x2F;</span><br><span class="line"></span><br><span class="line">		if err :&#x3D; chromedp.Run(ctx,</span><br><span class="line">			&#x2F;&#x2F; emulate iPhone 7 landscape</span><br><span class="line">			&#x2F;&#x2F; chromedp.Emulate(device.IPhone7landscape),</span><br><span class="line">			chromedp.Navigate(urlstr),</span><br><span class="line">			chromedp.EmulateViewport(1200, 0, chromedp.EmulateScale(1)),</span><br><span class="line">		); err !&#x3D; nil &#123;</span><br><span class="line">			log.Fatal(err)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		var buf []byte</span><br><span class="line">		for &#123;</span><br><span class="line">			buf &#x3D; []byte&#123;&#125;</span><br><span class="line">			if err :&#x3D; chromedp.Run(ctx, elementScreenshot(urlstr, selector, &amp;buf)); err !&#x3D; nil &#123;</span><br><span class="line">				log.Fatal(err)</span><br><span class="line">			&#125;</span><br><span class="line">			&#x2F;&#x2F; 发送到全局channel</span><br><span class="line">			CH_SC &lt;- buf</span><br><span class="line">			fmt.Println(int64(time.Since(begin).Seconds()), MAX_WATCH_TIME)</span><br><span class="line">			&#x2F;&#x2F; if int64(time.Since(begin).Seconds()) &gt; int64(MAX_WATCH_TIME) &#123;</span><br><span class="line">			&#x2F;&#x2F; 	return</span><br><span class="line">			&#x2F;&#x2F; &#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F; 启动发送消息通道</span><br><span class="line">	go func() &#123;</span><br><span class="line">		for &#123;</span><br><span class="line">			select &#123;</span><br><span class="line">			case task :&#x3D; &lt;-CH_SC:</span><br><span class="line">				&#x2F;&#x2F;task.Process()</span><br><span class="line">				fmt.Println(time.Now().Format(DATE_TIME_FORMAT))</span><br><span class="line">				sendPictureData(task)</span><br><span class="line">				&#x2F;&#x2F; 写入文件</span><br><span class="line">				if err :&#x3D; ioutil.WriteFile(&quot;youku_b.png&quot;, task, 0644); err !&#x3D; nil &#123;</span><br><span class="line">					log.Fatal(err)</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	http.HandleFunc(&quot;&#x2F;echo&quot;, echo)</span><br><span class="line">	log.Fatal(http.ListenAndServe(*addr, nil))</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 发送二进制图片数据</span><br><span class="line">func sendPictureData(picture []byte) &#123;</span><br><span class="line">	&#x2F;&#x2F; img, _ :&#x3D; png.Decode(bytes.NewReader(picture))</span><br><span class="line">	&#x2F;&#x2F; resizeImg :&#x3D; resize.Resize(hight, 0, img, resize.Lanczos3)</span><br><span class="line">	&#x2F;&#x2F;base64压缩</span><br><span class="line">	sourcestring :&#x3D; base64.StdEncoding.EncodeToString(picture)</span><br><span class="line">	&#x2F;&#x2F; err :&#x3D; c.WriteMessage(websocket.BinaryMessage, []byte(sourcestring))</span><br><span class="line">	for _, c :&#x3D; range ConnMap &#123;</span><br><span class="line">		err :&#x3D; c.WriteMessage(websocket.TextMessage, []byte(sourcestring))</span><br><span class="line">		if err !&#x3D; nil &#123;</span><br><span class="line">			log.Println(&quot;write:&quot;, err)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 截图方法</span><br><span class="line">func elementScreenshot(urlstr, sel string, res *[]byte) chromedp.Tasks &#123;</span><br><span class="line">	&#x2F;&#x2F; ssOpts :&#x3D; append()</span><br><span class="line">	return chromedp.Tasks&#123;</span><br><span class="line">		&#x2F;&#x2F; chromedp.Navigate(urlstr),</span><br><span class="line">		chromedp.WaitVisible(sel, chromedp.ByID),</span><br><span class="line">		&#x2F;&#x2F;chromedp.Sleep(time.Duration(3) * time.Second),</span><br><span class="line">		&#x2F;&#x2F; 执行截图</span><br><span class="line">		chromedp.Screenshot(sel, res, chromedp.NodeVisible, chromedp.ByID),</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="JS-处理"   >
+          <a href="#JS-处理" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS-处理" class="headerlink" title="JS 处理"></a>JS 处理</h3>
+       <figure class="highlight plain"><div class="table-container"><table><tr><td class="code"><pre><span class="line"> function arrayBufferToBase64(buffer) &#123;</span><br><span class="line">    var binary &#x3D; &#39;&#39;;</span><br><span class="line">    var bytes &#x3D; new Uint8Array(buffer);</span><br><span class="line">    var len &#x3D; bytes.byteLength;</span><br><span class="line">    for (var i &#x3D; 0; i &lt; len; i++) &#123;</span><br><span class="line">        binary +&#x3D; String.fromCharCode(bytes[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    return window.btoa(binary);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;**blob to dataURL**</span><br><span class="line">function blobToDataURL(blob, callback) &#123;</span><br><span class="line">    var a &#x3D; new FileReader();</span><br><span class="line">    a.onload &#x3D; function(e) &#123;</span><br><span class="line">        callback(e.target.result);</span><br><span class="line">    &#125;</span><br><span class="line">    a.readAsDataURL(blob);</span><br><span class="line">    return a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var canvas &#x3D; document.getElementById(&quot;animation_canvas&quot;);</span><br><span class="line">canvas.width &#x3D; 640;</span><br><span class="line">canvas.height &#x3D; 1030;</span><br><span class="line"></span><br><span class="line">var ctx &#x3D; canvas.getContext(&quot;2d&quot;);</span><br><span class="line">let ws &#x3D; new WebSocket(&quot;ws:&#x2F;&#x2F;localhost:9999&#x2F;echo&quot;);</span><br><span class="line">var player &#x3D; document.getElementById(&#39;player&#39;);</span><br><span class="line">ctx.drawImage(player, 0, 0);</span><br><span class="line"></span><br><span class="line">ws.onopen &#x3D; function () &#123;</span><br><span class="line">    ws.send(JSON.stringify(&#123; message: &quot;hello server!&quot; &#125;))</span><br><span class="line">&#125;</span><br><span class="line">ws.onmessage &#x3D; function(evt) &#123;</span><br><span class="line">    &#x2F;&#x2F; console.log(evt.data,typeof(evt.data))</span><br><span class="line">    &#x2F;&#x2F; base64数据直接展示  </span><br><span class="line">    if(typeof(evt.data)&#x3D;&#x3D;&quot;string&quot;)&#123;</span><br><span class="line">        player.src&#x3D;&#39;data:image&#x2F;png;base64,&#39;+evt.data;</span><br><span class="line">        player.onload&#x3D;function()&#123;</span><br><span class="line">            canvas.width &#x3D; 1200;</span><br><span class="line">            canvas.height &#x3D; this.height;</span><br><span class="line">            ctx.clearRect(0,0,canvas.width,canvas.height);  </span><br><span class="line">            ctx.drawImage(this, 0, 0);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F; 二进制数据转图片</span><br><span class="line">    &#x2F;&#x2F; result &#x3D; blobToDataURL(evt.data, function(dataurl) &#123;</span><br><span class="line">    &#x2F;&#x2F;     &#x2F;&#x2F; 截取 base64,</span><br><span class="line">    &#x2F;&#x2F;     var arr &#x3D; dataurl.split(&#39;,&#39;);</span><br><span class="line">    &#x2F;&#x2F;     var mime &#x3D; arr[0].match(&#x2F;:(.*?);&#x2F;)[1];</span><br><span class="line">    &#x2F;&#x2F;     var player &#x3D; document.getElementById(&#39;player&#39;);</span><br><span class="line">    &#x2F;&#x2F;     ctx.drawImage(player, 0, 0);</span><br><span class="line">    &#x2F;&#x2F;     var url&#x3D; arrayBufferToBase64(evt.data);</span><br><span class="line">    &#x2F;&#x2F;     player.src&#x3D;&#39;data:image&#x2F;png;base64,&#39;+arr[1];</span><br><span class="line">    &#x2F;&#x2F;     player.onload&#x3D;function()&#123;</span><br><span class="line">    &#x2F;&#x2F;         canvas.width &#x3D; 1200;</span><br><span class="line">    &#x2F;&#x2F;         canvas.height &#x3D; this.height;</span><br><span class="line">    &#x2F;&#x2F;         ctx.clearRect(0,0,canvas.width,canvas.height);  </span><br><span class="line">    &#x2F;&#x2F;         ctx.drawImage(this, 0, 0);</span><br><span class="line">    &#x2F;&#x2F;     &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; &#125;);</span><br><span class="line">&#125;</span><br><span class="line">ws.onerror &#x3D; function (event) &#123;</span><br><span class="line">    console.debug(event)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>]]></content>
+      <tags>
+        <tag>WebSocket chromedp golang</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux:SSH 隧道功能</title>
     <url>/2020/09/15/Linux-SSH-%E9%9A%A7%E9%81%93%E5%8A%9F%E8%83%BD/</url>
     <content><![CDATA[<figure class="highlight plain"><div class="table-container"><table><tr><td class="code"><pre><span class="line"># 检查代理服务器是否可以转发</span><br><span class="line">&#x2F;&#x2F; sshd 服务配置</span><br><span class="line">cat &#x2F;etc&#x2F;ssh&#x2F;sshd_config | grep AllowTcp</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 系统转发规则</span><br><span class="line">cat &#x2F;etc&#x2F;sysctl.conf | grep ip_forward</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 修改配置文件 修改</span><br><span class="line">sysctl -w net.ipv4.ip_forward&#x3D;1</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 检查运行时配置</span><br><span class="line">cat &#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;ip_forward</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 退出 重新连接</span><br><span class="line">ssh -L 8080:127.0.0.1:8080 root@121.xxxx.xxx.xxx</span><br><span class="line"></span><br><span class="line">本地端口：目标机器：端口</span><br></pre></td></tr></table></div></figure>]]></content>
