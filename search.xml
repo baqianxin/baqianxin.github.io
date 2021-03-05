@@ -367,14 +367,16 @@ postgresql</code></pre>
 <blockquote>
 <p>查看 socket 使用时,想到能否结合应用下 chan, 正好又看到chromedp 的文章.就思考能否通过 websocket + chan 实现 headless chrome 监控页面信息</p>
 </blockquote>
+</li>
+</ul>
 
         <h2 id="Socket"   >
           <a href="#Socket" class="heading-link"><i class="fas fa-link"></i></a><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h2>
-      <p>网络中的 Socket 并不是什么协议，而是为了使用 TCP，UDP 而抽象出来的一层 API，它是位于应用层和传输层之间的一个抽象层。Socket 是对 TCP/IP 的封装；<br>Golang 本身net 包 即可实现 Socket 服务 .</p>
+      <p> 网络中的 Socket 并不是什么协议，而是为了使用 TCP，UDP 而抽象出来的一层 API，它是位于应用层和传输层之间的一个抽象层。Socket 是对 TCP/IP 的封装；<br> Golang 本身net 包 即可实现 Socket 服务 .</p>
 
         <h2 id="WebSocket"   >
           <a href="#WebSocket" class="heading-link"><i class="fas fa-link"></i></a><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h2>
-      <p>WebSocket 是一种在单个 TCP 连接上进行全双工通信的协议. 因为不了解WebSocket导致闹了个笑话所以列出来</p>
+      <p> WebSocket 是一种在单个 TCP 连接上进行全双工通信的协议. 因为不了解WebSocket导致闹了个笑话所以列出来</p>
 <ul>
 <li>WebSocket 与 HTTP都是基于TCP/IP协议上的,可靠性传输协议,都是应用层协议.</li>
 <li>WebSocket是双向通信协议，模拟Socket协议，可以双向发送或接受信息。HTTP是单向的。</li>
@@ -389,18 +391,16 @@ postgresql</code></pre>
 
         <h2 id="chromedp"   >
           <a href="#chromedp" class="heading-link"><i class="fas fa-link"></i></a><a href="#chromedp" class="headerlink" title="chromedp"></a>chromedp</h2>
-      <p>用于驱动 支持  Chrome DevTools Protocol 的浏览器</p>
+      <p> 用于驱动 支持  Chrome DevTools Protocol 的浏览器</p>
 <blockquote>
 <p>Package chromedp is a faster, simpler way to drive browsers supporting the <code>Chrome DevTools Protocol</code>in Go without external dependencies (like Selenium or PhantomJS).</p>
 </blockquote>
-<span id="more"></span>
+ <span id="more"></span>
 
 
         <h3 id="Examples"   >
           <a href="#Examples" class="heading-link"><i class="fas fa-link"></i></a><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h3>
-      </li>
-</ul>
-<div class="table-container"><table>
+      <div class="table-container"><table>
 <thead>
 <tr>
 <th>Example</th>
