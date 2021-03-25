@@ -6,7 +6,7 @@
 <meta property="og:description" content="WebSocket+Chromedp实现页面实时监控                           出发点        理解与应用 Golang 的 Gorouting  Channel 通道 chan   WebSocket   chromedp   查看 socket 使用时,想到能否结合应用下 chan, 正好又看到chromedp 的文章.就思考能否通过 we">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-03-05T10:34:32.000Z">
-<meta property="article:modified_time" content="2021-03-05T10:45:43.535Z">
+<meta property="article:modified_time" content="2021-03-25T08:43:32.481Z">
 <meta property="article:author" content="baqianxin">
 <meta property="article:tag" content="WebSocket chromedp golang">
 <meta name="twitter:card" content="summary"><title>Golang使用WebSocket+ChromeDP实现实时页面监控 | baqianxin</title><link ref="canonical" href="http://baqianxin.github.io/2021/03/05/Golang%E4%BD%BF%E7%94%A8WebSocket-ChromeDP%E5%AE%9E%E7%8E%B0%E5%AE%9E%E6%97%B6%E9%A1%B5%E9%9D%A2%E7%9B%91%E6%8E%A7/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
@@ -33,7 +33,7 @@ var CONFIG = {
   sourcePath: {"js":"js","css":"css","images":"images"},
 };
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">Home</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">Archives</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">baqianxin</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Golang使用WebSocket+ChromeDP实现实时页面监控</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">Created</span><span class="post-meta-item__value">2021-03-05</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2021-03-05</span></span></div></header><div class="post-body">
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">Home</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">Archives</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">baqianxin</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Golang使用WebSocket+ChromeDP实现实时页面监控</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">Created</span><span class="post-meta-item__value">2021-03-05</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2021-03-25</span></span></div></header><div class="post-body">
         <h1 id="WebSocket-Chromedp实现页面实时监控"   >
           <a href="#WebSocket-Chromedp实现页面实时监控" class="heading-link"><i class="fas fa-link"></i></a><a href="#WebSocket-Chromedp实现页面实时监控" class="headerlink" title="WebSocket+Chromedp实现页面实时监控"></a>WebSocket+Chromedp实现页面实时监控</h1>
       
@@ -50,12 +50,13 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></he
 <blockquote>
 <p>查看 socket 使用时,想到能否结合应用下 chan, 正好又看到chromedp 的文章.就思考能否通过 websocket + chan 实现 headless chrome 监控页面信息</p>
 </blockquote>
-</li>
-</ul>
+<span id="more"></span>
 
         <h2 id="Socket"   >
           <a href="#Socket" class="heading-link"><i class="fas fa-link"></i></a><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h2>
-      <p> 网络中的 Socket 并不是什么协议，而是为了使用 TCP，UDP 而抽象出来的一层 API，它是位于应用层和传输层之间的一个抽象层。Socket 是对 TCP/IP 的封装；<br> Golang 本身net 包 即可实现 Socket 服务 .</p>
+      <p>网络中的 Socket 并不是什么协议，而是为了使用 TCP，UDP 而抽象出来的一层 API，它是位于应用层和传输层之间的一个抽象层。Socket 是对 TCP/IP 的封装；<br>Golang 本身net 包 即可实现 Socket 服务 .</p>
+</li>
+</ul>
 
         <h2 id="WebSocket"   >
           <a href="#WebSocket" class="heading-link"><i class="fas fa-link"></i></a><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h2>
@@ -78,7 +79,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></he
 <blockquote>
 <p>Package chromedp is a faster, simpler way to drive browsers supporting the <code>Chrome DevTools Protocol</code>in Go without external dependencies (like Selenium or PhantomJS).</p>
 </blockquote>
- <span id="more"></span>
+ <!--more-->
 
 
         <h3 id="Examples"   >

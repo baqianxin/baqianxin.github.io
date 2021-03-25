@@ -367,12 +367,13 @@ postgresql</code></pre>
 <blockquote>
 <p>查看 socket 使用时,想到能否结合应用下 chan, 正好又看到chromedp 的文章.就思考能否通过 websocket + chan 实现 headless chrome 监控页面信息</p>
 </blockquote>
-</li>
-</ul>
+<span id="more"></span>
 
         <h2 id="Socket"   >
           <a href="#Socket" class="heading-link"><i class="fas fa-link"></i></a><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h2>
-      <p> 网络中的 Socket 并不是什么协议，而是为了使用 TCP，UDP 而抽象出来的一层 API，它是位于应用层和传输层之间的一个抽象层。Socket 是对 TCP/IP 的封装；<br> Golang 本身net 包 即可实现 Socket 服务 .</p>
+      <p>网络中的 Socket 并不是什么协议，而是为了使用 TCP，UDP 而抽象出来的一层 API，它是位于应用层和传输层之间的一个抽象层。Socket 是对 TCP/IP 的封装；<br>Golang 本身net 包 即可实现 Socket 服务 .</p>
+</li>
+</ul>
 
         <h2 id="WebSocket"   >
           <a href="#WebSocket" class="heading-link"><i class="fas fa-link"></i></a><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h2>
@@ -395,7 +396,7 @@ postgresql</code></pre>
 <blockquote>
 <p>Package chromedp is a faster, simpler way to drive browsers supporting the <code>Chrome DevTools Protocol</code>in Go without external dependencies (like Selenium or PhantomJS).</p>
 </blockquote>
- <span id="more"></span>
+ <!--more-->
 
 
         <h3 id="Examples"   >
@@ -687,7 +688,7 @@ postgresql</code></pre>
 <li>WebSocket</li>
 <li>Bind(Query|Form|Json)</li>
 <li>JSONP|JSON|SecureJSON|PureJson</li>
-<li>XML|YAML</li>
+<li>XML|YAML<span id="more"></span></li>
 <li>ProtoBuf</li>
 <li>静态页面渲染</li>
 <li>文件下载</li>
@@ -710,7 +711,7 @@ postgresql</code></pre>
 <li><p>使用GuzzleHttp请求</p>
 <ul>
 <li>option 设置 auth=&gt;[name,password]<ul>
-<li>option 设置超时时间</li>
+<li>option 设置超时时间<span id="more"></span></li>
 </ul>
 </li>
 </ul>
@@ -764,6 +765,8 @@ postgresql</code></pre>
 <blockquote>
 <p>图数据库是一种非关系型数据库，以解决现有关系数据库的局限性。图模型明确地列出了数据节点之间的依赖关系，而关系模型和其他NoSQL数据库模型则通过隐式连接来链接数据。图数据库从设计上，就是可以简单快速地检索难以在关系系统中建模的复杂层次结构的。<br>– <span class="exturl"><a class="exturl__link"   href="https://zh.wikipedia.org/wiki/%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93" >图数据库wiki</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
 </blockquote>
+<span id="more"></span>
+
 
         <h2 id="应用"   >
           <a href="#应用" class="heading-link"><i class="fas fa-link"></i></a><a href="#应用" class="headerlink" title="应用"></a>应用</h2>

@@ -1,14 +1,14 @@
-<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="图数据库是什么        在计算机科学中，图数据库（英语：graph database，GDB）是一个使用图结构进行语义查询的数据库，它使用节点、边和属性来表示和存储数据。   图数据库是一种非关系型数据库，以解决现有关系数据库的局限性。图模型明确地列出了数据节点之间的依赖关系，而关系模型和其他NoSQL数据库模型则通过隐式连接来链接数据。图数据库从设计">
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="图数据库是什么        在计算机科学中，图数据库（英语：graph database，GDB）是一个使用图结构进行语义查询的数据库，它使用节点、边和属性来表示和存储数据。   图数据库是一种非关系型数据库，以解决现有关系数据库的局限性。图模型明确地列出了数据节点之间的依赖关系，而关系模型和其他NoSQL数据库模型则通过隐式连接来链接数据。图数据库从设计上，就是可以简单快">
 <meta property="og:type" content="article">
 <meta property="og:title" content="初识图数据库:neo4j">
 <meta property="og:url" content="http://baqianxin.github.io/2021/03/25/%E5%88%9D%E8%AF%86%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93-neo4j/index.html">
 <meta property="og:site_name" content="baqianxin">
-<meta property="og:description" content="图数据库是什么        在计算机科学中，图数据库（英语：graph database，GDB）是一个使用图结构进行语义查询的数据库，它使用节点、边和属性来表示和存储数据。   图数据库是一种非关系型数据库，以解决现有关系数据库的局限性。图模型明确地列出了数据节点之间的依赖关系，而关系模型和其他NoSQL数据库模型则通过隐式连接来链接数据。图数据库从设计">
+<meta property="og:description" content="图数据库是什么        在计算机科学中，图数据库（英语：graph database，GDB）是一个使用图结构进行语义查询的数据库，它使用节点、边和属性来表示和存储数据。   图数据库是一种非关系型数据库，以解决现有关系数据库的局限性。图模型明确地列出了数据节点之间的依赖关系，而关系模型和其他NoSQL数据库模型则通过隐式连接来链接数据。图数据库从设计上，就是可以简单快">
 <meta property="og:locale">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB922d619dc8420570c7fc57781c2db539?method=download&shareKey=2979777244337c648359ad8257d6e36a">
 <meta property="og:image" content="http://guides.neo4j.com/sandbox/movies/img/movies-after-2010.svg">
 <meta property="article:published_time" content="2021-03-25T08:16:46.000Z">
-<meta property="article:modified_time" content="2021-03-25T08:17:56.527Z">
+<meta property="article:modified_time" content="2021-03-25T08:42:43.746Z">
 <meta property="article:author" content="baqianxin">
 <meta property="article:tag" content="图数据库 neo4j Graph allhistory cyper">
 <meta name="twitter:card" content="summary">
@@ -45,6 +45,8 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></he
 <blockquote>
 <p>图数据库是一种非关系型数据库，以解决现有关系数据库的局限性。图模型明确地列出了数据节点之间的依赖关系，而关系模型和其他NoSQL数据库模型则通过隐式连接来链接数据。图数据库从设计上，就是可以简单快速地检索难以在关系系统中建模的复杂层次结构的。<br>– <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93" >图数据库wiki</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
 </blockquote>
+<span id="more"></span>
+
 
         <h2 id="应用"   >
           <a href="#应用" class="heading-link"><i class="fas fa-link"></i></a><a href="#应用" class="headerlink" title="应用"></a>应用</h2>
