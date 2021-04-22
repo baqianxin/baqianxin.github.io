@@ -2372,7 +2372,7 @@ kbd {
     width: 1138px;
   }
   .main-inner {
-    width: 1138px;
+    width: 85%;
   }
 }
 @media (min-width: 991.98px) {
