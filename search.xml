@@ -806,4 +806,44 @@ postgresql</code></pre>
         <tag>图数据库 neo4j Graph allhistory cyper</tag>
       </tags>
   </entry>
+  <entry>
+    <title>go-gin es查询使用多条件与聚合</title>
+    <url>/2021/05/25/go-gin-es%E6%9F%A5%E8%AF%A2%E4%BD%BF%E7%94%A8%E5%A4%9A%E6%9D%A1%E4%BB%B6%E4%B8%8E%E8%81%9A%E5%90%88/</url>
+    <content><![CDATA[
+        <h2 id="es查询-term-与-match"   >
+          <a href="#es查询-term-与-match" class="heading-link"><i class="fas fa-link"></i></a><a href="#es查询-term-与-match" class="headerlink" title="es查询 term 与 match"></a>es查询 term 与 match</h2>
+      
+        <h2 id="es查询-must-与-should"   >
+          <a href="#es查询-must-与-should" class="heading-link"><i class="fas fa-link"></i></a><a href="#es查询-must-与-should" class="headerlink" title="es查询 must 与 should"></a>es查询 must 与 should</h2>
+      <ul>
+<li>must的两个条件都必须满足</li>
+<li>should中的两个条件至少满足一个就可以</li>
+</ul>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="code"><pre><span class="line">GET &#x2F;dns_cache_ms_log_queue_2021*&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;term&quot;: &#123;</span><br><span class="line">            &quot;Data.Tid.keyword&quot;: &quot;445f395f647c1b36&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;term&quot;: &#123;</span><br><span class="line">            &quot;Host.keyword&quot;: &quot;p53577v.hulk.shbt.qihoo.net_001&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="olivere-elastic-使用"   >
+          <a href="#olivere-elastic-使用" class="heading-link"><i class="fas fa-link"></i></a><a href="#olivere-elastic-使用" class="headerlink" title="olivere/elastic 使用"></a>olivere/elastic 使用</h2>
+      <ul>
+<li>NewBoolQuery 多条件查询器</li>
+<li>q.Must / q.Should 添加查询器</li>
+<li>其他查询器 NewTermQuery NewMatchQuery …</li>
+<li>分页 From(OFFSET) / Size(PAGESIZ)</li>
+<li>排序 Sort(FIELD,DESC_BOOL)</li>
+</ul>
+<figure class="highlight go"><div class="table-container"><table><tr><td class="code"><pre><span class="line">client := GetEsClient().Search().Index(<span class="string">&quot;dns_cache_ms_log_queue_20*&quot;</span>)</span><br><span class="line">boolQuery := elastic.NewBoolQuery()</span><br><span class="line"></span><br><span class="line">termQuery := elastic.NewTermQuery(<span class="string">&quot;Data.Tid.keyword&quot;</span>, tid)</span><br><span class="line">termQueryHost := elastic.NewTermQuery(<span class="string">&quot;Host.keyword&quot;</span>, host)</span><br><span class="line">boolQuery.Must(termQuery)</span><br><span class="line">boolQuery.Must(termQueryHost)</span><br><span class="line">client = client.Query(boolQuery)</span><br><span class="line">PrintDSL(boolQuery) <span class="comment">// 打印查询器生成的 json 数据</span></span><br><span class="line">searchResult, err := client.From(page*ES_PAGE_SIZE).Size(ES_PAGE_SIZE).Sort(<span class="string">&quot;@timestamp&quot;</span>, <span class="literal">false</span>).</span><br><span class="line">    Pretty(<span class="literal">true</span>). <span class="comment">// 查询结果返回可读性较好的JSON格式</span></span><br><span class="line">    Do(context.Background())</span><br><span class="line">fmt.Printf(<span class="string">&quot;查询消耗时间 %d ms, 结果总数: %d\n&quot;</span>, searchResult.TookInMillis, searchResult.TotalHits())</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="es-使用排序字段的问题"   >
+          <a href="#es-使用排序字段的问题" class="heading-link"><i class="fas fa-link"></i></a><a href="#es-使用排序字段的问题" class="headerlink" title="es 使用排序字段的问题"></a>es 使用排序字段的问题</h2>
+      <ul>
+<li><span class="exturl"><a class="exturl__link"   href="https://my.oschina.net/dabird/blog/1926042" >es sort all shards failed [type=search_phase_execution_exception]</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li><span class="exturl"><a class="exturl__link"   href="https://www.elastic.co/guide/en/elasticsearch/reference/6.7/search-request-sort.html#_ignoring_unmapped_fields" >Ignoring Unmapped Fields</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+<figure class="highlight go"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 参与排序的字段类型不明确 CreateTime [未映射类型字段]</span></span><br><span class="line">client.Sort(<span class="string">&quot;CreateTime&quot;</span>, <span class="literal">false</span>)</span><br><span class="line"><span class="comment">// 替换为默认时间字段</span></span><br><span class="line">client.Sort(<span class="string">&quot;@timestamp&quot;</span>, <span class="literal">false</span>)</span><br></pre></td></tr></table></div></figure>
+]]></content>
+      <tags>
+        <tag>go,gin,es,多条件,聚合</tag>
+      </tags>
+  </entry>
 </search>
