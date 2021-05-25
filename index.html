@@ -29,40 +29,7 @@ var CONFIG = {
   sourcePath: {"js":"js","css":"css","images":"images"},
 };
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">Home</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">Archives</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">baqianxin</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/09/15/ELK-Nginx%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95/">ELK:Nginx日志记录</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">Created</span><span class="post-meta-item__value">2020-09-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2021-03-04</span></span></div></header><div class="post-body"><div class="post-excerpt"><h1 id="目的"   >
-          <a href="#目的" class="heading-link"><i class="fas fa-link"></i></a><a href="#目的" class="headerlink" title="目的"></a>目的</h1>
-      <ul>
-<li>目的：需要统计推广带来的转化效果</li>
-<li>思路：通过统计 Nginx 日志，来分析不同渠道带来的访问量的变化。（可能再通过新增用户比去计算下转化率，不确定是不是需要这个值）</li>
-</ul>
-
-        <h1 id="技术方案"   >
-          <a href="#技术方案" class="heading-link"><i class="fas fa-link"></i></a><a href="#技术方案" class="headerlink" title="技术方案"></a>技术方案</h1>
-      <ul>
-<li>修改 Nginx 日志格式为JSON ，通过 Qbus 收集 Nginx 的访问日志到消息队列。再使用 Logstash 同步到 ES 中；接着创建 Kibana 索引查询模板，筛选展示数据<ul>
-<li>Qbus</li>
-<li>Elasticsearch</li>
-<li>Kibana</li>
-<li>Logstash</li>
-<li>Nginx 日志</li>
-</ul>
-</li>
-</ul></div><div class="post-readmore"><a class="post-readmore__link" href="/2020/09/15/ELK-Nginx%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95/"><span class="post-readmore__text">Read More</span><span class="post-readmore__icon"><i class="fas fa-long-arrow-alt-right"></i></span></a></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/09/15/Sonar%E4%BB%A3%E7%A0%81%E6%A3%80%E6%9F%A5%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2/">Sonar代码检查服务部署</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">Created</span><span class="post-meta-item__value">2020-09-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2021-05-25</span></span></div></header><div class="post-body"><div class="post-excerpt"><h2 id="SonarQube代码检查服务部署"   >
-          <a href="#SonarQube代码检查服务部署" class="heading-link"><i class="fas fa-link"></i></a><a href="#SonarQube代码检查服务部署" class="headerlink" title="SonarQube代码检查服务部署"></a>SonarQube代码检查服务部署</h2>
-      <blockquote>
-<p>前言： 小组内的代码检查服务<br>部署： Docker</p>
-</blockquote>
-<p>[TOC]</p>
-
-        <h2 id="服务构成"   >
-          <a href="#服务构成" class="heading-link"><i class="fas fa-link"></i></a><a href="#服务构成" class="headerlink" title="服务构成"></a>服务构成</h2>
-      <ul>
-<li>PostgreSQL</li>
-<li>SonarQube</li>
-</ul>
-
-        <h2 id="镜像"   >
-          <a href="#镜像" class="heading-link"><i class="fas fa-link"></i></a><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h2></div><div class="post-readmore"><a class="post-readmore__link" href="/2020/09/15/Sonar%E4%BB%A3%E7%A0%81%E6%A3%80%E6%9F%A5%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2/"><span class="post-readmore__text">Read More</span><span class="post-readmore__icon"><i class="fas fa-long-arrow-alt-right"></i></span></a></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/09/15/DNS-%E8%A7%A3%E6%9E%90keywords/">DNS 解析keywords</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">Created</span><span class="post-meta-item__value">2020-09-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2020-09-15</span></span></div></header><div class="post-body"><div class="post-excerpt">
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">Home</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">Archives</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">baqianxin</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/09/15/DNS-%E8%A7%A3%E6%9E%90keywords/">DNS 解析keywords</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">Created</span><span class="post-meta-item__value">2020-09-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2020-09-15</span></span></div></header><div class="post-body"><div class="post-excerpt">
         <h1 id="DNS-解析keywords"   >
           <a href="#DNS-解析keywords" class="heading-link"><i class="fas fa-link"></i></a><a href="#DNS-解析keywords" class="headerlink" title="DNS 解析keywords"></a>DNS 解析keywords</h1>
       <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">A(Client)--&gt;B(Local DNS)</span><br></pre></td></tr></table></div></figure>
@@ -111,72 +78,61 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></he
 <ul>
 <li>域名IP变更，主要发生在权威服务上，同步到全网DNS缓存延迟严重</li>
 </ul>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/09/15/Gitlab-CI-CD-%E9%9B%86%E6%88%90-SonarQube-%E6%89%AB%E6%8F%8F%E6%9C%8D%E5%8A%A1/">Gitlab CI/CD 集成 SonarQube 扫描服务</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">Created</span><span class="post-meta-item__value">2020-09-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2021-03-04</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h1 id="Gitlab-CI-CD-集成-SonarQube-扫描服务"   >
-          <a href="#Gitlab-CI-CD-集成-SonarQube-扫描服务" class="heading-link"><i class="fas fa-link"></i></a><a href="#Gitlab-CI-CD-集成-SonarQube-扫描服务" class="headerlink" title="Gitlab CI/CD 集成 SonarQube 扫描服务"></a>Gitlab CI/CD 集成 SonarQube 扫描服务</h1>
-      <p>[TOC]</p>
-<pre><code>环境：Docker
-
-gitlab
-gitlab-runner
-sonarqube
-postgresql</code></pre>
-        <h2 id="使用示例"   >
-          <a href="#使用示例" class="heading-link"><i class="fas fa-link"></i></a><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h2>
-      <figure class="highlight yml"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .gitlab-ci.yml</span></span><br><span class="line"></span><br><span class="line"><span class="attr">stages:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">sonar-scanner</span></span><br><span class="line"><span class="attr">sonar:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">sonar-scanner</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">sonar-scanner</span> </span><br><span class="line">      <span class="string">-Dsonar.projectKey=cd_demo</span> </span><br><span class="line">      <span class="string">-Dsonar.sources=.</span> </span><br><span class="line">      <span class="string">-Dsonar.host.url=http://10.18.27.80:9823</span> </span><br><span class="line">      <span class="string">-Dsonar.login=a138bc0d36c7130bb30aebbaffbc44148b6ab8e4</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">sonar</span></span><br><span class="line">  <span class="attr">when:</span> <span class="string">always</span></span><br></pre></td></tr></table></div></figure>
-
-
-
-
-        <h2 id="Sonar-服务"   >
-          <a href="#Sonar-服务" class="heading-link"><i class="fas fa-link"></i></a><a href="#Sonar-服务" class="headerlink" title="Sonar 服务"></a>Sonar 服务</h2>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/03/25/%E5%88%9D%E8%AF%86%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93-neo4j/">初识图数据库:neo4j</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">Created</span><span class="post-meta-item__value">2020-03-25</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2021-05-25</span></span></div></header><div class="post-body"><div class="post-excerpt"><h2 id="图数据库是什么"   >
+          <a href="#图数据库是什么" class="heading-link"><i class="fas fa-link"></i></a><a href="#图数据库是什么" class="headerlink" title="图数据库是什么"></a>图数据库是什么</h2>
+      <blockquote>
+<p>在计算机科学中，图数据库（英语：graph database，GDB）是一个使用图结构进行语义查询的数据库，它使用节点、边和属性来表示和存储数据。</p>
+</blockquote>
+<blockquote>
+<p>图数据库是一种非关系型数据库，以解决现有关系数据库的局限性。图模型明确地列出了数据节点之间的依赖关系，而关系模型和其他NoSQL数据库模型则通过隐式连接来链接数据。图数据库从设计上，就是可以简单快速地检索难以在关系系统中建模的复杂层次结构的。<br>– <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93" >图数据库wiki</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote></div><div class="post-readmore"><a class="post-readmore__link" href="/2020/03/25/%E5%88%9D%E8%AF%86%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93-neo4j/"><span class="post-readmore__text">Read More</span><span class="post-readmore__icon"><i class="fas fa-long-arrow-alt-right"></i></span></a></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2019/11/15/ELK-Nginx%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95/">ELK:Nginx日志记录</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">Created</span><span class="post-meta-item__value">2019-11-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2021-05-25</span></span></div></header><div class="post-body"><div class="post-excerpt"><h1 id="目的"   >
+          <a href="#目的" class="heading-link"><i class="fas fa-link"></i></a><a href="#目的" class="headerlink" title="目的"></a>目的</h1>
       <ul>
-<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://note.youdao.com/noteshare?id=61644a0153db0c34075be66430fbe3c4" >SonarQube 代码检查服务部署</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>目的：需要统计推广带来的转化效果</li>
+<li>思路：通过统计 Nginx 日志，来分析不同渠道带来的访问量的变化。（可能再通过新增用户比去计算下转化率，不确定是不是需要这个值）</li>
 </ul>
 
-        <h3 id="Sonar-集成-GitLab"   >
-          <a href="#Sonar-集成-GitLab" class="heading-link"><i class="fas fa-link"></i></a><a href="#Sonar-集成-GitLab" class="headerlink" title="Sonar 集成 GitLab"></a>Sonar 集成 GitLab</h3>
+        <h1 id="技术方案"   >
+          <a href="#技术方案" class="heading-link"><i class="fas fa-link"></i></a><a href="#技术方案" class="headerlink" title="技术方案"></a>技术方案</h1>
       <ul>
-<li>admin 安装 git 插件 <code>Administration</code>-&gt;<code>marketpalce</code>-&gt; <code>search git</code>-&gt;<code>restart server</code></li>
-<li><code>ALM Intergrations</code><br><img   src="https://note.youdao.com/yws/api/personal/file/E6645A1C4C6E47B78402FED13B5F369A?method=download&shareKey=814d1fda2ad408c56016122cef5c90fa" style=""  alt="sonar-gitlab"></li>
-<li><code>Gitlab Application</code> <code>Token-Secret</code><br><img   src="https://note.youdao.com/yws/api/personal/file/4DE448654E9F41D7A1CC7AE6A8E375CF?method=download&shareKey=90a053673cc128ed3be7b9cf566b5bc6" style=""  alt="Gitlab Application T-S"></li>
-</ul>
-
-        <h2 id="Gitlab-runner-服务"   >
-          <a href="#Gitlab-runner-服务" class="heading-link"><i class="fas fa-link"></i></a><a href="#Gitlab-runner-服务" class="headerlink" title="Gitlab-runner 服务"></a>Gitlab-runner 服务</h2>
-      <ul>
-<li>构建 <code>gitlab-runner</code> 镜像，集成 <code>node</code> ,<code>sonar-scanner</code></li>
-<li>注册 <code>Runner</code> ：<ul>
-<li><code>gitlab-runner</code> <code>register</code></li>
-<li>输入 <code>gitlab-host</code></li>
-<li>输入 <code>runner-token</code></li>
-<li>输入 <code>tag</code></li>
-<li>选择执行方式 <code>shell</code></li>
+<li>修改 Nginx 日志格式为JSON ，通过 Qbus 收集 Nginx 的访问日志到消息队列。再使用 Logstash 同步到 ES 中；接着创建 Kibana 索引查询模板，筛选展示数据<ul>
+<li>Qbus</li>
+<li>Elasticsearch</li>
+<li>Kibana</li>
+<li>Logstash</li>
+<li>Nginx 日志</li>
 </ul>
 </li>
-<li>开启 <code>Runner</code> 不匹配 <code>tag</code> 执行,在 <code>CI/CD</code> -&gt; <code>runner</code> 的设置里</li>
-</ul>
-<p><img   src="https://note.youdao.com/yws/api/personal/file/B4C37DC2CA36420180D3CC8C00A1DC4D?method=download&shareKey=d17249b1446369fff0a6912c6f824eb7" style=""  alt="注册"></p>
-<hr>
+</ul></div><div class="post-readmore"><a class="post-readmore__link" href="/2019/11/15/ELK-Nginx%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95/"><span class="post-readmore__text">Read More</span><span class="post-readmore__icon"><i class="fas fa-long-arrow-alt-right"></i></span></a></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2019/11/15/Docker-%E4%BD%BF%E7%94%A8gosu%E5%88%87%E6%8D%A2%E7%94%A8%E6%88%B7/">Docker 使用gosu切换用户</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">Created</span><span class="post-meta-item__value">2019-11-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2021-05-25</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="容器启动时切换用户gosu执行脚本"   >
+          <a href="#容器启动时切换用户gosu执行脚本" class="heading-link"><i class="fas fa-link"></i></a><a href="#容器启动时切换用户gosu执行脚本" class="headerlink" title="容器启动时切换用户gosu执行脚本"></a>容器启动时切换用户gosu执行脚本</h1>
+      
+        <h2 id="问题"   >
+          <a href="#问题" class="heading-link"><i class="fas fa-link"></i></a><a href="#问题" class="headerlink" title="问题"></a>问题</h2>
+      <p>想在小组内部推一下代码检查工具Sonar，申请了容器空间用于部署。在自己本地编译镜像之后推送到公司镜像源之后，发现拉取后启动容器失败了：检查输出日志</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">java.lang.RuntimeException: don<span class="string">&#x27;t run elasticsearch as root.</span></span><br><span class="line"><span class="string">        at org.elasticsearch.bootstrap.Bootstrap.initializeNatives(Bootstrap.java:94)</span></span><br><span class="line"><span class="string">        at org.elasticsearch.bootstrap.Bootstrap.setup(Bootstrap.java:160)</span></span><br><span class="line"><span class="string">        at org.elasticsearch.bootstrap.Bootstrap.init(Bootstrap.java:286)</span></span><br><span class="line"><span class="string">        at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:35)</span></span><br></pre></td></tr></table></div></figure>
+<p>这就奇怪了，本地构建的镜像，运行都是正常的啊；难道公司容器服务启动的时候会强制以root账户运行？</p>
 
-        <h3 id="Gitlab-runner-容器编排"   >
-          <a href="#Gitlab-runner-容器编排" class="heading-link"><i class="fas fa-link"></i></a><a href="#Gitlab-runner-容器编排" class="headerlink" title="Gitlab-runner 容器编排"></a>Gitlab-runner 容器编排</h3>
-      <pre><code>docker-compose.yml</code></pre><figure class="highlight yml"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">runner:</span></span><br><span class="line">  <span class="attr">container_name:</span> <span class="string">&#x27;gitlab-runner&#x27;</span></span><br><span class="line">  <span class="attr">build:</span> <span class="string">../../server/gitlab-runner/</span></span><br><span class="line">  <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;8093:8093&#x27;</span></span><br><span class="line">  <span class="comment"># volumes:</span></span><br><span class="line">  <span class="comment">#   - &#x27;$GITLAB_HOME/gitlab-runner/config:/etc/gitlab-runner&#x27;</span></span><br><span class="line">  <span class="comment">#   - &#x27;/var/run/docker.sock:/var/run/docker.sock&#x27;</span></span><br><span class="line"><span class="attr">web:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">&#x27;gitlab/gitlab-ee:latest&#x27;</span></span><br><span class="line">  <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">  <span class="attr">hostname:</span> <span class="string">&#x27;gitlab.example.com&#x27;</span></span><br><span class="line">  <span class="attr">environment:</span></span><br><span class="line">    <span class="attr">GITLAB_OMNIBUS_CONFIG:</span> <span class="string">|</span></span><br><span class="line">      <span class="string">external_url</span> <span class="string">&#x27;http://gitlab.example.com:8929&#x27;</span></span><br><span class="line">      <span class="string">gitlab_rails[&#x27;gitlab_shell_ssh_port&#x27;]</span> <span class="string">=</span> <span class="number">2224</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;8929:8929&#x27;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;2224:22&#x27;</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;$GITLAB_HOME/config:/etc/gitlab&#x27;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;$GITLAB_HOME/logs:/var/log/gitlab&#x27;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;$GITLAB_HOME/data:/var/opt/gitlab&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
+        <h2 id="排查"   >
+          <a href="#排查" class="heading-link"><i class="fas fa-link"></i></a><a href="#排查" class="headerlink" title="排查"></a>排查</h2>
+      <blockquote>
+<p>本地构建镜像的时候修改 ENDPOINT 脚本 <code>run.sh</code> ；输出当前执行用户 whoami ;确实是  <code>root</code></p>
+</blockquote>
 
-<pre><code>gitlab-runner/Dockerfile</code></pre><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">FROM gitlab&#x2F;gitlab-runner:latest</span><br><span class="line"></span><br><span class="line">LABEL MAINTAINER&#x3D;baqianxin@360.cn</span><br><span class="line"></span><br><span class="line">RUN export LANG&#x3D;en_US.UTF-8  &amp;&amp; export LANGUAGE&#x3D;en_US</span><br><span class="line"></span><br><span class="line">RUN apt-get update &amp;&amp;  apt-get  install -y  nodejs vim unzip </span><br><span class="line">RUN cd &#x2F;opt &amp;&amp; \ </span><br><span class="line">wget https:&#x2F;&#x2F;binaries.sonarsource.com&#x2F;Distribution&#x2F;sonar-scanner-cli&#x2F;sonar-scanner-cli-4.0.0.1744-linux.zip &amp;&amp; \</span><br><span class="line">unzip sonar-scanner-cli-4.0.0.1744-linux.zip &amp;&amp; \ </span><br><span class="line">mv sonar-scanner-4.0.0.1744-linux sonar-scanner</span><br><span class="line"></span><br><span class="line">RUN  ln -s &#x2F;opt&#x2F;sonar-scanner&#x2F;bin&#x2F;sonar-scanner &#x2F;usr&#x2F;bin&#x2F;sonar-scanner &amp;&amp; sonar-scanner -v</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
+        <h3 id="尝试1"   >
+          <a href="#尝试1" class="heading-link"><i class="fas fa-link"></i></a><a href="#尝试1" class="headerlink" title="尝试1"></a>尝试1</h3>
+      <figure class="highlight dockerfile"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 前置切换用户</span></span><br><span class="line"><span class="keyword">USER</span> sonarqube</span><br><span class="line">ENDPOINT [<span class="string">&quot;run.sh&quot;</span>]</span><br><span class="line"><span class="comment"># 推送，部署还是报错 ES 无法使用 root 账户启动</span></span><br></pre></td></tr></table></div></figure>
 
 
-        <h3 id="注意问题"   >
-          <a href="#注意问题" class="heading-link"><i class="fas fa-link"></i></a><a href="#注意问题" class="headerlink" title="注意问题"></a>注意问题</h3>
-      <ul>
-<li>系统语言需设置 LCALL LANGUAGE LANG=en_US.UTF-8</li>
-</ul>
-<pre><code>[submodule &quot;golang/example&quot;]
-    active = true
-    url = git@github.com:baqianxin/examples.git
-[submodule &quot;spider/chineseocr_lite&quot;]
-    url = git@github.com:baqianxin/chineseocr_lite.git
-    active = true</code></pre></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2019/09/15/Go-Web%E6%8E%A5%E5%8F%A3%E5%AE%9E%E6%97%B6%E9%99%90%E6%B5%81/">Go:Web接口实时限流</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">Created</span><span class="post-meta-item__value">2019-09-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2021-05-25</span></span></div></header><div class="post-body"><div class="post-excerpt"><h1 id="Golang-接口实时限流功能"   >
+        <h3 id="尝试2"   >
+          <a href="#尝试2" class="heading-link"><i class="fas fa-link"></i></a><a href="#尝试2" class="headerlink" title="尝试2"></a>尝试2</h3>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改ENDPOINT</span></span><br><span class="line"></span><br><span class="line">ENDPOINT su - sonarqube -s <span class="string">&quot;./run.sh&quot;</span></span><br><span class="line"><span class="comment"># 推送 部署还是错误： 环境变量，账户目录/home/sonarqube(本来就没创建账户目录)都找不到了</span></span><br><span class="line"> </span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="尝试3【√】"   >
+          <a href="#尝试3【√】" class="heading-link"><i class="fas fa-link"></i></a><a href="#尝试3【√】" class="headerlink" title="尝试3【√】"></a>尝试3【√】</h3>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改镜像 添加 gosu / su-exec (sonarqube 官方脚本有这个)</span></span><br><span class="line">RUN apt update &amp;&amp; apt install gosu -y</span><br><span class="line"></span><br><span class="line"><span class="comment"># 同时修改 run.sh 脚本</span></span><br><span class="line"><span class="built_in">exec</span> gosu sonarqube <span class="string">&quot;<span class="variable">$cmd</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 推送&amp;启动，OK</span></span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2019/09/15/Go-Web%E6%8E%A5%E5%8F%A3%E5%AE%9E%E6%97%B6%E9%99%90%E6%B5%81/">Go:Web接口实时限流</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">Created</span><span class="post-meta-item__value">2019-09-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2021-05-25</span></span></div></header><div class="post-body"><div class="post-excerpt"><h1 id="Golang-接口实时限流功能"   >
           <a href="#Golang-接口实时限流功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#Golang-接口实时限流功能" class="headerlink" title="Golang 接口实时限流功能"></a>Golang 接口实时限流功能</h1>
       
         <h2 id="实现需求"   >
