@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="DNS 解析keywords       12graph LRA(Client)--&gt;B(Local DNS) 12345Client --&gt; hosts文件 --&gt; DNS Service Local Cache --&gt; DNS Server (recursion递归查看本地配置的解析文件) --&gt; Server Cache">
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="DNS 解析keywords       12graph LRA(Client)--&gt;B(Local DNS) 12345Client --&gt; hosts文件 --&gt; DNS Service Local Cache --&gt; DNS Server (recursion递归查看本地配置的解析文件) --&gt; Server Cache --&gt; it">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DNS 解析keywords">
 <meta property="og:url" content="http://baqianxin.github.io/2020/09/15/DNS-%E8%A7%A3%E6%9E%90keywords/index.html">
 <meta property="og:site_name" content="baqianxin">
-<meta property="og:description" content="DNS 解析keywords       12graph LRA(Client)--&gt;B(Local DNS) 12345Client --&gt; hosts文件 --&gt; DNS Service Local Cache --&gt; DNS Server (recursion递归查看本地配置的解析文件) --&gt; Server Cache">
+<meta property="og:description" content="DNS 解析keywords       12graph LRA(Client)--&gt;B(Local DNS) 12345Client --&gt; hosts文件 --&gt; DNS Service Local Cache --&gt; DNS Server (recursion递归查看本地配置的解析文件) --&gt; Server Cache --&gt; it">
 <meta property="og:locale">
 <meta property="article:published_time" content="2020-09-15T08:30:45.000Z">
 <meta property="article:modified_time" content="2020-09-15T08:30:45.000Z">
@@ -46,6 +46,8 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></he
 <li>DNS 解析，若缓存命中就会直接返回缓存结果，不再进行递归DNS查询</li>
 </ul>
 </blockquote>
+<span id="more"></span>
+
 <p><strong>缓存</strong></p>
 <ul>
 <li>DNS解析缓存数据，在递归获取真实 访问IP之后更新</li>

@@ -29,8 +29,7 @@ var CONFIG = {
   sourcePath: {"js":"js","css":"css","images":"images"},
 };
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">Home</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">Archives</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">baqianxin</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/09/15/DNS-%E8%A7%A3%E6%9E%90keywords/">DNS 解析keywords</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">Created</span><span class="post-meta-item__value">2020-09-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2020-09-15</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h1 id="DNS-解析keywords"   >
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">Home</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">Archives</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">baqianxin</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/09/15/DNS-%E8%A7%A3%E6%9E%90keywords/">DNS 解析keywords</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">Created</span><span class="post-meta-item__value">2020-09-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2020-09-15</span></span></div></header><div class="post-body"><div class="post-excerpt"><h1 id="DNS-解析keywords"   >
           <a href="#DNS-解析keywords" class="heading-link"><i class="fas fa-link"></i></a><a href="#DNS-解析keywords" class="headerlink" title="DNS 解析keywords"></a>DNS 解析keywords</h1>
       <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">A(Client)--&gt;B(Local DNS)</span><br></pre></td></tr></table></div></figure>
 <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Client --&gt; hosts文件 </span><br><span class="line">--&gt; DNS Service Local Cache --&gt; DNS Server (recursion递归查看本地配置的解析文件) </span><br><span class="line">--&gt; Server Cache </span><br><span class="line">--&gt; iteration(迭代) --&gt; 根 --&gt; 顶级域名DNS --&gt; 二级域名DNS…</span><br><span class="line">最终本地dns查看结果后返回给客户端</span><br></pre></td></tr></table></div></figure>
@@ -38,47 +37,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></he
 <ul>
 <li>DNS 解析，若缓存命中就会直接返回缓存结果，不再进行递归DNS查询</li>
 </ul>
-</blockquote>
-<p><strong>缓存</strong></p>
-<ul>
-<li>DNS解析缓存数据，在递归获取真实 访问IP之后更新</li>
-</ul>
-<p><strong>递归</strong></p>
-<ul>
-<li>从缓存数据中无法获取目的地IP，则开始递归查询各级域名服务器，获取最终IP<ul>
-<li>根域名服务器</li>
-<li>顶级域名服务器</li>
-<li><strong>权威</strong> 域名服务器</li>
-</ul>
-</li>
-</ul>
-<p><strong>权威</strong></p>
-<ul>
-<li>域名对应的真实IP存储节点，由权威服务器选择返回域名对应的真实且最合适的IP</li>
-</ul>
-<p><strong>Q.域名劫持</strong></p>
-<ul>
-<li>并对终端用户的 Local DNS 进行篡改，指向伪造的 Local DNS ，返回错误的 IP 信息</li>
-<li>监听用户的域名解析请求，伪造的 DNS 解析响应传递给用户</li>
-<li><strong>DNS缓存污染</strong> ，Local DNS缓存数据被修改了</li>
-</ul>
-<p><strong>Q.精准调度</strong></p>
-<ul>
-<li>区域</li>
-<li>运营商</li>
-</ul>
-<blockquote>
-<p>除了解析转发对调度精准性带来的影响外，Local DNS的布署情况同样影响着域名智能解析的精准性。</p>
-</blockquote>
-<p><strong>Q.DNS解析服务耗时</strong></p>
-<ul>
-<li>DNS服务部署不合理导致的解析域名耗时</li>
-</ul>
-<p><strong>Q.权威服务数据更新滞后</strong></p>
-<ul>
-<li>域名IP变更，主要发生在权威服务上，同步到全网DNS缓存延迟严重</li>
-</ul>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/03/25/%E5%88%9D%E8%AF%86%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93-neo4j/">初识图数据库:neo4j</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">Created</span><span class="post-meta-item__value">2020-03-25</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2021-05-25</span></span></div></header><div class="post-body"><div class="post-excerpt"><h2 id="图数据库是什么"   >
+</blockquote></div><div class="post-readmore"><a class="post-readmore__link" href="/2020/09/15/DNS-%E8%A7%A3%E6%9E%90keywords/"><span class="post-readmore__text">Read More</span><span class="post-readmore__icon"><i class="fas fa-long-arrow-alt-right"></i></span></a></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/03/25/%E5%88%9D%E8%AF%86%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93-neo4j/">初识图数据库:neo4j</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">Created</span><span class="post-meta-item__value">2020-03-25</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2021-05-25</span></span></div></header><div class="post-body"><div class="post-excerpt"><h2 id="图数据库是什么"   >
           <a href="#图数据库是什么" class="heading-link"><i class="fas fa-link"></i></a><a href="#图数据库是什么" class="headerlink" title="图数据库是什么"></a>图数据库是什么</h2>
       <blockquote>
 <p>在计算机科学中，图数据库（英语：graph database，GDB）是一个使用图结构进行语义查询的数据库，它使用节点、边和属性来表示和存储数据。</p>

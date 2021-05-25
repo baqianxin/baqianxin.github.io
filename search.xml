@@ -13,6 +13,8 @@
 <li>DNS 解析，若缓存命中就会直接返回缓存结果，不再进行递归DNS查询</li>
 </ul>
 </blockquote>
+<span id="more"></span>
+
 <p><strong>缓存</strong></p>
 <ul>
 <li>DNS解析缓存数据，在递归获取真实 访问IP之后更新</li>
@@ -93,6 +95,11 @@
           <a href="#尝试3【√】" class="heading-link"><i class="fas fa-link"></i></a><a href="#尝试3【√】" class="headerlink" title="尝试3【√】"></a>尝试3【√】</h3>
       <figure class="highlight bash"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 修改镜像 添加 gosu / su-exec (sonarqube 官方脚本有这个)</span></span><br><span class="line">RUN apt update &amp;&amp; apt install gosu -y</span><br><span class="line"></span><br><span class="line"><span class="comment"># 同时修改 run.sh 脚本</span></span><br><span class="line"><span class="built_in">exec</span> gosu sonarqube <span class="string">&quot;<span class="variable">$cmd</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 推送&amp;启动，OK</span></span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
 ]]></content>
+      <tags>
+        <tag>es</tag>
+        <tag>docker</tag>
+        <tag>gosu</tag>
+      </tags>
   </entry>
   <entry>
     <title>ELK:Nginx日志记录</title>
