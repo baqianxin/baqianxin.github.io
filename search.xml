@@ -920,4 +920,57 @@ postgresql</code></pre>
         <tag>聚合</tag>
       </tags>
   </entry>
+  <entry>
+    <title>web服务https证书设置-nginx/golang</title>
+    <url>/2021/05/26/web%E6%9C%8D%E5%8A%A1https%E8%AF%81%E4%B9%A6%E8%AE%BE%E7%BD%AE-nginx-golang/</url>
+    <content><![CDATA[
+        <h2 id="证书"   >
+          <a href="#证书" class="heading-link"><i class="fas fa-link"></i></a><a href="#证书" class="headerlink" title="证书"></a>证书</h2>
+      <ul>
+<li><p>用于签名的信息</p>
+</li>
+<li><p>*.crt : 公钥</p>
+</li>
+<li><p>*.ca : 根证书</p>
+</li>
+<li><p>*.key : 私钥</p>
+</li>
+</ul>
+<p>自签证书使用注意事项</p>
+<ul>
+<li>根证书添加</li>
+<li>签名证书添加</li>
+</ul>
+
+        <h2 id="生成规则"   >
+          <a href="#生成规则" class="heading-link"><i class="fas fa-link"></i></a><a href="#生成规则" class="headerlink" title="生成规则"></a>生成规则</h2>
+      <ul>
+<li>工具网站</li>
+<li>openssl </li>
+</ul>
+
+        <h2 id="nginx-配置ssl相关参数"   >
+          <a href="#nginx-配置ssl相关参数" class="heading-link"><i class="fas fa-link"></i></a><a href="#nginx-配置ssl相关参数" class="headerlink" title="nginx 配置ssl相关参数"></a>nginx 配置ssl相关参数</h2>
+      <ul>
+<li>listen 443 default_server ssl;</li>
+<li>ssl_certificate /etc/nginx/certs/default.crt;</li>
+<li>ssl_certificate_key /etc/nginx/certs/default.key;</li>
+</ul>
+<p>优化设置</p>
+<ul>
+<li>支持协议</li>
+<li>….</li>
+</ul>
+
+        <h2 id="Go-web服务使用证书"   >
+          <a href="#Go-web服务使用证书" class="heading-link"><i class="fas fa-link"></i></a><a href="#Go-web服务使用证书" class="headerlink" title="Go-web服务使用证书"></a>Go-web服务使用证书</h2>
+      ]]></content>
+      <tags>
+        <tag>go</tag>
+        <tag>nginx</tag>
+        <tag>https</tag>
+        <tag>web</tag>
+        <tag>ssl</tag>
+      </tags>
+  </entry>
 </search>
