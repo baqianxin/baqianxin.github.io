@@ -942,11 +942,12 @@ postgresql</code></pre>
 <li>签名证书添加</li>
 </ul>
 
-        <h2 id="生成规则"   >
-          <a href="#生成规则" class="heading-link"><i class="fas fa-link"></i></a><a href="#生成规则" class="headerlink" title="生成规则"></a>生成规则</h2>
-      <ul>
+        <h2 id="生成方式"   >
+          <a href="#生成方式" class="heading-link"><i class="fas fa-link"></i></a><a href="#生成方式" class="headerlink" title="生成方式"></a>生成方式</h2>
+      <span id="more"></span>
+<ul>
 <li>工具网站</li>
-<li>openssl </li>
+<li>openssl</li>
 </ul>
 
         <h2 id="nginx-配置ssl相关参数"   >
