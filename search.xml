@@ -927,14 +927,13 @@ postgresql</code></pre>
         <h2 id="证书"   >
           <a href="#证书" class="heading-link"><i class="fas fa-link"></i></a><a href="#证书" class="headerlink" title="证书"></a>证书</h2>
       <ul>
-<li><p>用于签名的信息</p>
-</li>
-<li><p>*.crt : 公钥</p>
-</li>
-<li><p>*.ca : 根证书</p>
-</li>
-<li><p>*.key : 私钥</p>
-</li>
+<li>用于签名的信息</li>
+<li>…</li>
+<li>.crt/.cer 证书(Certificate)</li>
+<li>.key 密钥/私钥(Private Key)</li>
+<li>.csr 证书认证签名请求(Certificate signing request)</li>
+<li>*.pem base64编码文本储存格式，可以单独放证书或密钥，也可以同时放两个；base64编码就是两条——-之间的那些莫名其妙的字符</li>
+<li>*.der 证书的二进制储存格式(不常用)</li>
 </ul>
 <p>自签证书使用注意事项</p>
 <ul>
