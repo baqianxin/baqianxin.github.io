@@ -973,4 +973,104 @@ postgresql</code></pre>
         <tag>ssl</tag>
       </tags>
   </entry>
+  <entry>
+    <title>laravel-mysql2pgsql</title>
+    <url>/2020/09/16/mysql2pgsql/</url>
+    <content><![CDATA[
+        <h1 id="Laravel-mysql-to-pgsql"   >
+          <a href="#Laravel-mysql-to-pgsql" class="heading-link"><i class="fas fa-link"></i></a><a href="#Laravel-mysql-to-pgsql" class="headerlink" title="Laravel mysql to pgsql"></a>Laravel mysql to pgsql</h1>
+      <p>laravel 项目直接修改配置文件即可切换 driver</p>
+<ul>
+<li><p><code>php</code> 开启 <code>pdo_pgsql.so</code> <code>extension php.ini</code></p>
+<ul>
+<li>下载源码-解压-CD…</li>
+<li><code>phpize</code></li>
+<li>执行 <code>./configuration with-php-config=php-config</code></li>
+<li><code>make &amp;&amp; make install</code></li>
+<li><code>vim php.ini extensions pdo_pgsql</code></li>
+</ul>
+</li>
+<li><p>时区问题</p>
+<ul>
+<li>使用 工具从mysql导入到pgsql的数据存在时区 例如: <code>2020-08-19 19:00:12+08</code></li>
+<li>需要修改所有 <code>Model</code> 的 <code>dateFormat</code></li>
+<li><code>protected $dateFormat = &#39;Y-m-d H:i:sP&#39;;</code></li>
+<li>扩展php中的其他时区格式: <span class="exturl"><a class="exturl__link"   href="https://www.php.net/manual/zh/function.date.php" >e/O/P/T/Z</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 等含义</li>
+</ul>
+</li>
+<li><p><strong>走过的弯路</strong></p>
+<ul>
+<li>自定义 <code>Model</code> 的 <code>asDatetime()</code> / <code>get-DATEFIELD-Attribute()</code></li>
+</ul>
+<span id="more"></span>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Administrator</span> <span class="keyword">extends</span> <span class="title">BaseAdministrator</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$dateFormat</span> = <span class="string">&quot;Y-m-d H:i:sP&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$casts</span> = [</span><br><span class="line">        <span class="string">&#x27;images&#x27;</span> =&gt; <span class="string">&#x27;array&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;created_at&#x27;</span> =&gt; <span class="string">&quot;timestamptz:Y-m-d H:i:sP&quot;</span>,</span><br><span class="line">        <span class="string">&#x27;updated_at&#x27;</span> =&gt; <span class="string">&quot;timestamptz:Y-m-d H:i:sP&quot;</span>,</span><br><span class="line">    ];</span><br><span class="line"></span><br><span class="line"><span class="comment">//    protected function getCreatedAtAttribute($value)&#123;</span></span><br><span class="line"><span class="comment">//        return  &quot;2020-04-15 08:30:04+08:00&quot;;</span></span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line"><span class="comment">//    protected function getUpdatedAtAttribute($value)&#123;</span></span><br><span class="line"><span class="comment">//        return &quot;2020-04-15 08:30:04+08:00&quot;;</span></span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line"><span class="comment">//    protected function asDateTime($value)</span></span><br><span class="line"><span class="comment">//    &#123;</span></span><br><span class="line"><span class="comment">//        $ts = explode(&quot;+&quot;, $value);</span></span><br><span class="line"><span class="comment">//        var_dump($ts);</span></span><br><span class="line"><span class="comment">//        if (count($ts) &gt; 1) &#123;</span></span><br><span class="line"><span class="comment">//            return \Carbon\Carbon::rawCreateFromFormat(&#x27;Y-m-d H:i:sP&#x27;, &quot;2020-04-15 08:30:04+08:00&quot;);</span></span><br><span class="line"><span class="comment">//        &#125;</span></span><br><span class="line"><span class="comment">//        return \Carbon\Carbon::rawCreateFromFormat(&#x27;Y-m-d H:i:sP&#x27;, &quot;2020-04-15 08:30:04+08:00&quot;);</span></span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line"><span class="comment">//    public function toArray()</span></span><br><span class="line"><span class="comment">//    &#123;</span></span><br><span class="line"><span class="comment">//        return [];</span></span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+
+</li>
+</ul>
+<p>操作方案: 综合考虑后使用两步走的方案</p>
+<ol>
+<li><p>先转换 <code>dbschame.sql</code> :使用 <code>py-mysql2pgsql</code> 工具包</p>
+ <figure class="highlight plain"><div class="table-container"><table><tr><td class="code"><pre><span class="line">oomcc:py-mysql2pgsql oom$ py-mysql2pgsql -h</span><br><span class="line">https:&#x2F;&#x2F;github.com&#x2F;philipsoutham&#x2F;py-mysql2pgsql</span><br><span class="line">oomcc:py-mysql2pgsql oom$ py-mysql2pgsql -f mysql2pgsql.yml</span><br></pre></td></tr></table></div></figure>
+
+<p> <code>mysql2pgsql.yml</code> 文件:</p>
+ <figure class="highlight plain"><div class="table-container"><table><tr><td class="code"><pre><span class="line"># a socket connection will be selected if a &#39;socket&#39; is specified</span><br><span class="line"># also &#39;localhost&#39; is a special &#39;hostname&#39; for MySQL that overrides the &#39;port&#39; option</span><br><span class="line"># and forces it to use a local socket connection</span><br><span class="line"># if tcp is chosen, you can use compression</span><br><span class="line"></span><br><span class="line">mysql:</span><br><span class="line">hostname: 127.0.0.1</span><br><span class="line">port: 33036</span><br><span class="line">username: root</span><br><span class="line">password: 123456</span><br><span class="line">database: eerrrr</span><br><span class="line">compress: false</span><br><span class="line">destination:</span><br><span class="line"># if file is given, output goes to file, else postgres</span><br><span class="line">file: .&#x2F;td.sql</span><br><span class="line">postgres:</span><br><span class="line">hostname: localhost</span><br><span class="line">port: 5432</span><br><span class="line">username: mysql2psql</span><br><span class="line">password: </span><br><span class="line">database: mysql2psql_test</span><br><span class="line"></span><br><span class="line"># if tables is given, only the listed tables will be converted.  leave empty to convert all tables.</span><br><span class="line">#only_tables:</span><br><span class="line">#- table1</span><br><span class="line">#- table2</span><br><span class="line"># if exclude_tables is given, exclude the listed tables from the conversion.</span><br><span class="line">#exclude_tables:</span><br><span class="line">#- table3</span><br><span class="line">#- table4</span><br><span class="line"></span><br><span class="line"># if supress_data is true, only the schema definition will be exported&#x2F;migrated, and not the data</span><br><span class="line">supress_data: true</span><br><span class="line"></span><br><span class="line"># if supress_ddl is true, only the data will be exported&#x2F;imported, and not the schema</span><br><span class="line">supress_ddl: false</span><br><span class="line"></span><br><span class="line"># if force_truncate is true, forces a table truncate before table loading</span><br><span class="line">force_truncate: false</span><br><span class="line"></span><br><span class="line"># if timezone is true, forces to append&#x2F;convert to UTC tzinfo mysql data</span><br><span class="line">timezone: false</span><br><span class="line"></span><br><span class="line"># if index_prefix is given, indexes will be created whith a name prefixed with index_prefix</span><br><span class="line">index_pre**fix:** idx_</span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
+
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p>再导入数据: 使用 <strong>pgloader/navicate</strong>:</p>
+<p> a): <code>navicate</code> -&gt; 工具-&gt; 数据传输: 关闭设置中的 <code>DDL相关选项</code></p>
+<p> b): <code>pgloader</code>: 自定义传输模版 <code>pg.load</code></p>
+<p> <code>pg.load</code> 文件:</p>
+ <figure class="highlight plain"><div class="table-container"><table><tr><td class="code"><pre><span class="line">LOAD DATABASE</span><br><span class="line">    FROM mysql:&#x2F;&#x2F;www:wwww@12wwww1:33036&#x2F;aaa</span><br><span class="line">    INTO pgsql:&#x2F;&#x2F;www:wwww@10wwww87:31139&#x2F;ffff</span><br><span class="line"></span><br><span class="line">    WITH include drop, create tables, create indexes, workers &#x3D; 8, concurrency &#x3D; 1</span><br><span class="line"></span><br><span class="line">ALTER SCHEMA &#39;wwwww&#39; RENAME TO &#39;public&#39;</span><br><span class="line">;</span><br></pre></td></tr></table></div></figure>
+
+<p> <strong>执行日志</strong>:</p>
+ <figure class="highlight plain"><div class="table-container"><table><tr><td class="code"><pre><span class="line">oomcc:py-mysql2pgsql oom$ vim pg.load </span><br><span class="line">oomcc:py-mysql2pgsql oom$ pgloader pg.load</span><br><span class="line">2020-09-15T11:31:53.011646+01:00 LOG pgloader version &quot;3.6.2&quot;</span><br><span class="line">2020-09-15T11:31:53.013707+01:00 LOG Data errors in &#39;&#x2F;private&#x2F;tmp&#x2F;pgloader&#x2F;&#39;</span><br><span class="line">2020-09-15T11:31:53.013761+01:00 LOG Parsing commands from file #P&quot;&#x2F;Users&#x2F;oom&#x2F;Desktop&#x2F;py-mysql2pgsql&#x2F;pg.load&quot;</span><br><span class="line">2020-09-15T11:31:53.258908+01:00 LOG Migrating from #&lt;MYSQL-CONNECTION mysql:&#x2F;&#x2F;root@127.0.0.1:33036&#x2F;dns_cache_new &#123;1005ABE6E3&#125;&gt;</span><br><span class="line">2020-09-15T11:31:53.259212+01:00 LOG Migrating into #&lt;PGSQL-CONNECTION pgsql:&#x2F;&#x2F;light@10.220.171.187:31139&#x2F;cache_ms_s &#123;1005ABF393&#125;&gt;</span><br><span class="line">2020-09-15T11:32:37.324643+01:00 LOG report summary reset</span><br><span class="line">                table name     errors       rows      bytes      total time</span><br><span class="line">-----------------------------  ---------  ---------  ---------  --------------</span><br><span class="line">             fetch meta data          0         60                     0.406s</span><br><span class="line">              Create Schemas          0          0                     0.029s</span><br><span class="line">            Create SQL Types          0          0                     0.034s</span><br><span class="line">               Create tables          0         48                     2.472s</span><br><span class="line">              Set Table OIDs          0         24                     0.024s</span><br><span class="line">-----------------------------  ---------  ---------  ---------  --------------</span><br><span class="line">    public.admin_permissions          0         10     0.8 kB          0.362s</span><br><span class="line">  public.admin_operation_log          0      27832     3.8 MB          2.596s</span><br><span class="line">     public.admin_role_users          0          3     0.0 kB          0.569s</span><br><span class="line">           ... ...</span><br><span class="line">-----------------------------  ---------  ---------  ---------  --------------</span><br><span class="line">     COPY Threads Completion          0          8                    31.225s</span><br><span class="line">              Create Indexes          0         36                    35.220s</span><br><span class="line">      Index Build Completion          0         36                     2.508s</span><br><span class="line">             Reset Sequences          0         22                     0.568s</span><br><span class="line">                Primary Keys          0         24                     1.041s</span><br><span class="line">         Create Foreign Keys          0          0                     0.000s</span><br><span class="line">             Create Triggers          0         20                     0.997s</span><br><span class="line">            Install Comments          0         90                     4.185s</span><br><span class="line">-----------------------------  ---------  ---------  ---------  --------------</span><br><span class="line">           Total import time          ✓     762609   130.7 MB       1m15.744s</span><br><span class="line">oomcc:py-mysql2pgsql oom$ </span><br></pre></td></tr></table></div></figure>
+
+</li>
+</ol>
+
+        <h2 id="Error-and-fix"   >
+          <a href="#Error-and-fix" class="heading-link"><i class="fas fa-link"></i></a><a href="#Error-and-fix" class="headerlink" title="Error and fix:"></a>Error and <strong>fix:</strong></h2>
+      <ol>
+<li><p>message: “SQLSTATE[23502]: Not null violation: 7 ERROR:  null value in column &quot;id&quot; violates not-null constraint\nDETAIL:  Failing row contains (null, 12, 57, null, null, null, null). (SQL: insert into &quot;dc_view_recursion&quot; (&quot;device_id&quot;, &quot;view_id&quot;) values (57, 12), (90, 12), (91, 12), (92, 12))”</p>
+<p> <strong>fix:</strong> <code>转换建表语句 py-mysql2pgsql</code></p>
+</li>
+<li><p>解决mac _mysql.c:44:10: fatal error: ‘my_config.h‘ file not found</p>
+<p> <strong>fix:</strong> <code>/usr/local/include/mysql 下有个 mysql.h 文件，这个就应该是我们要找的my_config.h 文件了吧，cp mysql.h my_config.h ，再次 pip install MySQL-python</code></p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   href="https://stackoverflow.com/questions/26288042/error-installing-psycopg2-library-not-found-for-lssl" >ld: library not found for -lssl</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p> <strong>fix:</strong> <code>env LDFLAGS=&quot;-I/usr/local/opt/openssl/include -L/usr/local/opt/openssl/lib&quot; pip install mysql-python | psycopg2</code></p>
+</li>
+<li><p>ERROR: Command errored out with exit status 1: python setup.py egg_info Check the logs for full command output.</p>
+<p> <strong>fix:</strong> <code>pip install -U setuptools</code></p>
+</li>
+<li><p>UnicodeEncodeError: ‘latin-1’ codec can’t encode characters in position 0-6: ordinal not in range(256)</p>
+<p> <strong>fix:</strong> ⬇️</p>
+</li>
+<li><p>UnicodeDecodeError: ‘ascii’ codec can’t decode byte 0xe7 in position 1: ordinal not in range(128)</p>
+<p> <strong>fix:</strong>  <code>注销第三方库的表注释生成代码:/Library/Python/2.7/site-packages/py_mysql2pgsql-0.1.6-py2.7.egg/mysql2pgsql/lib/postgres_writer.py:Line 144-148</code></p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   href="https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation" >yaml.load(input) Deprecation Warning!</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p> <strong>fix:</strong>.  <code>手动修改 py-mysql2pgsql 源码,添加Loader:</code></p>
+<p> <code>self.options = load(open(config_file_path),Loader=FullLoader)</code></p>
+<p> <code>/Library/Python/2.7/site-packages/py_mysql2pgsql-0.1.6-py2.7.egg/mysql2pgsql/lib/config.py:Line 18</code></p>
+</li>
+</ol>
+<p>其他</p>
+<ul>
+<li>pgloader : 存在自增索引初始值不对的问题</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>laravel</tag>
+        <tag>pgsql</tag>
+        <tag>mysql</tag>
+        <tag>datetime</tag>
+        <tag>dateformat</tag>
+      </tags>
+  </entry>
 </search>
