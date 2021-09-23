@@ -51,8 +51,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></he
           <a href="#Laravel-mysql-to-pgsql" class="heading-link"><i class="fas fa-link"></i></a><a href="#Laravel-mysql-to-pgsql" class="headerlink" title="Laravel mysql to pgsql"></a>Laravel mysql to pgsql</h1>
       <p>laravel 项目直接修改配置文件即可切换 driver</p>
 <ul>
-<li><p><code>php</code> 开启 <code>pdo_pgsql.so</code> <code>extension php.ini</code></p>
-<ul>
+<li><code>php</code> 开启 <code>pdo_pgsql.so</code> <code>extension php.ini</code><ul>
 <li>下载源码-解压-CD…</li>
 <li><code>phpize</code></li>
 <li>执行 <code>./configuration with-php-config=php-config</code></li>
@@ -60,18 +59,14 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></he
 <li><code>vim php.ini extensions pdo_pgsql</code></li>
 </ul>
 </li>
-<li><p>时区问题</p>
-<ul>
+<li>时区问题<ul>
 <li>使用 工具从mysql导入到pgsql的数据存在时区 例如: <code>2020-08-19 19:00:12+08</code></li>
 <li>需要修改所有 <code>Model</code> 的 <code>dateFormat</code></li>
 <li><code>protected $dateFormat = &#39;Y-m-d H:i:sP&#39;;</code></li>
+<li>model-&gt;save(): 自动更新时间逻辑 freshTimestamp</li>
+<li>数据查询渲染  serializeDate</li>
 <li>扩展php中的其他时区格式: <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.php.net/manual/zh/function.date.php" >e/O/P/T/Z</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 等含义</li>
-</ul>
-</li>
-<li><p><strong>走过的弯路</strong></p>
-<ul>
-<li>自定义 <code>Model</code> 的 <code>asDatetime()</code> / <code>get-DATEFIELD-Attribute()</code></li>
-</ul></div><div class="post-readmore"><a class="post-readmore__link" href="/2020/09/16/mysql2pgsql/"><span class="post-readmore__text">Read More</span><span class="post-readmore__icon"><i class="fas fa-long-arrow-alt-right"></i></span></a></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/09/15/DNS-%E8%A7%A3%E6%9E%90keywords/">DNS 解析keywords</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">Created</span><span class="post-meta-item__value">2020-09-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2020-09-15</span></span></div></header><div class="post-body"><div class="post-excerpt"><h1 id="DNS-解析keywords"   >
+<li>相关代码</div><div class="post-readmore"><a class="post-readmore__link" href="/2020/09/16/mysql2pgsql/"><span class="post-readmore__text">Read More</span><span class="post-readmore__icon"><i class="fas fa-long-arrow-alt-right"></i></span></a></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/09/15/DNS-%E8%A7%A3%E6%9E%90keywords/">DNS 解析keywords</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">Created</span><span class="post-meta-item__value">2020-09-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2020-09-15</span></span></div></header><div class="post-body"><div class="post-excerpt"><h1 id="DNS-解析keywords"   >
           <a href="#DNS-解析keywords" class="heading-link"><i class="fas fa-link"></i></a><a href="#DNS-解析keywords" class="headerlink" title="DNS 解析keywords"></a>DNS 解析keywords</h1>
       <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">A(Client)--&gt;B(Local DNS)</span><br></pre></td></tr></table></div></figure>
 <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Client --&gt; hosts文件 </span><br><span class="line">--&gt; DNS Service Local Cache --&gt; DNS Server (recursion递归查看本地配置的解析文件) </span><br><span class="line">--&gt; Server Cache </span><br><span class="line">--&gt; iteration(迭代) --&gt; 根 --&gt; 顶级域名DNS --&gt; 二级域名DNS…</span><br><span class="line">最终本地dns查看结果后返回给客户端</span><br></pre></td></tr></table></div></figure>
