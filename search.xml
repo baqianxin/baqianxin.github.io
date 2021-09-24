@@ -4,33 +4,6 @@
   
     
     <entry>
-      <title>wkhtmltox-docker-golang</title>
-      <link href="2021/09/24/wkhtmltox-docker-golang/"/>
-      <url>2021/09/24/wkhtmltox-docker-golang/</url>
-      
-        <content type="html"><![CDATA[        <h1 id="使用-wkhtmltopdf-生成用户定时报表-pdf"   >          <a href="#使用-wkhtmltopdf-生成用户定时报表-pdf" class="heading-link"><i class="fas fa-link"></i></a><a href="#使用-wkhtmltopdf-生成用户定时报表-pdf" class="headerlink" title="使用 wkhtmltopdf 生成用户定时报表.pdf"></a>使用 wkhtmltopdf 生成用户定时报表.pdf</h1>              <h2 id="方案选择"   >          <a href="#方案选择" class="heading-link"><i class="fas fa-link"></i></a><a href="#方案选择" class="headerlink" title="方案选择"></a>方案选择</h2>      <ul><li><p>要实现用户的定时 <code>PDF</code> 报告发送功能,需要用到 <code>HTML</code>-&gt;<code>PDF</code> 的转换.选的工具是 <a href="https://wkhtmltopdf.org/"><code>wkhtmltopdf</code></a> 使用 <code>golang</code> 的 <code>cmd.Exec(&quot;转换shell命令&quot;)</code> 来做的.</p></li><li><p>当然也有其他的方式无头浏览器(Headless Chrome) <a href="https://github.com/puppeteer/puppeteer"><code>nodejs-puppter</code></a> / <a href="https://github.com/chromedp/chromedp"><code>golang-chromedp</code></a> | <a href="https://github.com/chromedp/example"><code>example</code></a> , 之前也整理过无头浏览器的使用<a href="./Golang使用WebSocket+ChromeDP实现实时页面监控"><code>Golang使用WebSocket+ChromeDP实现实时页面监控</code></a></p></li></ul>        <h2 id="Golnag-渲染-HTML"   >          <a href="#Golnag-渲染-HTML" class="heading-link"><i class="fas fa-link"></i></a><a href="#Golnag-渲染-HTML" class="headerlink" title="Golnag 渲染 HTML"></a>Golnag 渲染 HTML</h2>              <h2 id="图标渲染"   >          <a href="#图标渲染" class="heading-link"><i class="fas fa-link"></i></a><a href="#图标渲染" class="headerlink" title="图标渲染"></a>图标渲染</h2>      <p>wkhtmltopdf 使用上存在 JS 语法兼容的问题,目前只支持 ES5.所以在使用图表组件的时候需要确认开发支持的JS语法版本 </p><ul><li>Antv.G2.js </li><li>Echart.js</li></ul>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> docker </tag>
-            
-            <tag> wkhtmltox </tag>
-            
-            <tag> golang </tag>
-            
-            <tag> charset </tag>
-            
-            <tag> 中文 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>web服务https证书设置-nginx/golang</title>
       <link href="2021/05/26/web%E6%9C%8D%E5%8A%A1https%E8%AF%81%E4%B9%A6%E8%AE%BE%E7%BD%AE-nginx-golang/"/>
       <url>2021/05/26/web%E6%9C%8D%E5%8A%A1https%E8%AF%81%E4%B9%A6%E8%AE%BE%E7%BD%AE-nginx-golang/</url>
@@ -50,6 +23,33 @@
             <tag> web </tag>
             
             <tag> ssl </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>wkhtmltox-docker-golang</title>
+      <link href="2020/09/24/wkhtmltox-docker-golang/"/>
+      <url>2020/09/24/wkhtmltox-docker-golang/</url>
+      
+        <content type="html"><![CDATA[        <h1 id="使用-wkhtmltopdf-生成用户定时报表-pdf"   >          <a href="#使用-wkhtmltopdf-生成用户定时报表-pdf" class="heading-link"><i class="fas fa-link"></i></a><a href="#使用-wkhtmltopdf-生成用户定时报表-pdf" class="headerlink" title="使用 wkhtmltopdf 生成用户定时报表.pdf"></a>使用 wkhtmltopdf 生成用户定时报表.pdf</h1>              <h2 id="方案选择"   >          <a href="#方案选择" class="heading-link"><i class="fas fa-link"></i></a><a href="#方案选择" class="headerlink" title="方案选择"></a>方案选择</h2>      <ul><li><p>要实现用户的定时 <code>PDF</code> 报告发送功能,需要用到 <code>HTML</code>-&gt;<code>PDF</code> 的转换.选的工具是 <a href="https://wkhtmltopdf.org/"><code>wkhtmltopdf</code></a> 使用 <code>golang</code> 的 <code>cmd.Exec(&quot;转换shell命令&quot;)</code> 来做的.</p></li><li><p>当然也有其他的方式无头浏览器(Headless Chrome) <a href="https://github.com/puppeteer/puppeteer"><code>nodejs-puppter</code></a> / <a href="https://github.com/chromedp/chromedp"><code>golang-chromedp</code></a> | <a href="https://github.com/chromedp/example"><code>example</code></a> , 之前也整理过无头浏览器的使用<a href="./Golang使用WebSocket+ChromeDP实现实时页面监控"><code>Golang使用WebSocket+ChromeDP实现实时页面监控</code></a></p></li></ul>        <h2 id="Golnag-渲染-HTML"   >          <a href="#Golnag-渲染-HTML" class="heading-link"><i class="fas fa-link"></i></a><a href="#Golnag-渲染-HTML" class="headerlink" title="Golnag 渲染 HTML"></a>Golnag 渲染 HTML</h2>              <h2 id="图标渲染"   >          <a href="#图标渲染" class="heading-link"><i class="fas fa-link"></i></a><a href="#图标渲染" class="headerlink" title="图标渲染"></a>图标渲染</h2>      <p>wkhtmltopdf 使用上存在 JS 语法兼容的问题,目前只支持 ES5.所以在使用图表组件的时候需要确认开发支持的JS语法版本 </p><ul><li>Antv.G2.js </li><li>Echart.js</li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> docker </tag>
+            
+            <tag> wkhtmltox </tag>
+            
+            <tag> golang </tag>
+            
+            <tag> charset </tag>
+            
+            <tag> 中文 </tag>
             
         </tags>
       
