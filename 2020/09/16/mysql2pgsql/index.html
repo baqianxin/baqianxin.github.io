@@ -103,6 +103,11 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></he
 <li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://stackoverflow.com/questions/26288042/error-installing-psycopg2-library-not-found-for-lssl" >ld: library not found for -lssl</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
 <p> <strong>fix:</strong> <code>env LDFLAGS=&quot;-I/usr/local/opt/openssl/include -L/usr/local/opt/openssl/lib&quot; pip install mysql-python | psycopg2</code></p>
 </li>
+</ol>
+<ol start="8">
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/11618898/pg-config-executable-not-found"><code>f&quot;Unable to find &#39;pg_config&#39; file in &#39;&#123;self.pg_config_exe&#125;&#39;&quot;)</code></a></li>
+</ol>
+<ol start="4">
 <li><p>ERROR: Command errored out with exit status 1: python setup.py egg_info Check the logs for full command output.</p>
 <p> <strong>fix:</strong> <code>pip install -U setuptools</code></p>
 </li>
