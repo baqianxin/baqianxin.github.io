@@ -232,6 +232,17 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></he
 </li>
 </ul>
 <p>现象: 用户可以非常快地看到页面，但是在下载、解析和执行脚本之前，就无法滚动。主线程在这段时间内完全被占用，对单击事件或屏幕点击没有响应。</p>
+
+        <h2 id="实验观察"   >
+          <a href="#实验观察" class="heading-link"><i class="fas fa-link"></i></a><a href="#实验观察" class="headerlink" title="实验观察"></a>实验观察</h2>
+      <ul>
+<li>本地页面文件,浏览器打开</li>
+<li>控制台设置加载资源的速度</li>
+<li>验证页面资源加载对页面绘制的影响</li>
+<li>CSS 加载对 HTML/JS 的影响</li>
+<li>打开 Rendering -&gt; Paint flashing 绘制布局</li>
+<li>打开 Show overview / Capture screenshots 绘制过程</li>
+</ul>
 <hr>
 <p>引用</p>
 <ul>
@@ -239,6 +250,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></he
 <li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.usenix.org/legacy/publications/library/proceedings/usenix02/tech/freenix/full_papers/sarolahti/sarolahti_html/index.html" ># Congestion Control in Linux TCP</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
 <li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/Performance/Critical_rendering_path#optimizing_for_crp" ># CRP 关键路径渲染</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
 <li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/Performance" ># Web Performance</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction?hl=zh-cn" ># 渲染树构建、布局及绘制</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
 </ul>
 </div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/10/27/Python3-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85-SSL-Module/">Python3.7 编译安装-SSL Module</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-10-27</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-10-27</span></span></div></header><div class="post-body"><div class="post-excerpt"><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://bugs.python.org/issue34028" >https://bugs.python.org/issue34028</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
 <p>openssl1.1.1 编译安装</p>
