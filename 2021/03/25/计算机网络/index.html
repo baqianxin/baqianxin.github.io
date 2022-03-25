@@ -5,8 +5,8 @@
 <meta property="og:site_name" content="oomcc">
 <meta property="og:description" content="笔记：                     网络的出现与RFC规范                           接入方式                           应用层                           SMTP 邮件发送服务协议">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://baqianxin.github.io/2021/03/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/udp%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84.png">
-<meta property="og:image" content="http://baqianxin.github.io/2021/03/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/tcp%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://baqianxin.github.io/images/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/udp%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://baqianxin.github.io/images/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/tcp%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84.png">
 <meta property="article:published_time" content="2021-03-25T09:54:39.000Z">
 <meta property="article:modified_time" content="2021-03-25T09:54:39.000Z">
 <meta property="article:author" content="oom">
@@ -14,7 +14,7 @@
 <meta property="article:tag" content="TCP">
 <meta property="article:tag" content="UDP">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://baqianxin.github.io/2021/03/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/udp%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84.png"><title>计算机网络 | oomcc</title><link ref="canonical" href="http://baqianxin.github.io/2021/03/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+<meta name="twitter:image" content="http://baqianxin.github.io/images/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/udp%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84.png"><title>计算机网络 | oomcc</title><link ref="canonical" href="http://baqianxin.github.io/2021/03/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
 var CONFIG = {
   root: '/',
   algolia: undefined,
@@ -230,7 +230,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></he
 <li><p>运输层UDP报文段结构：</p>
 <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. 套接字有唯一标识符</span><br><span class="line">2. 每个报文段有特殊字段来指示该报文段所要交付到的套接字</span><br><span class="line"></span><br><span class="line">结构：(UDP报文段)</span><br><span class="line">4 字节 = 32 比特  : 源端口号（16） ｜ 目的端口（16）其大小在0 ~65535</span><br><span class="line">        :  其他首部字段 （长度｜检验和）</span><br><span class="line">        :  应用数据（报文）</span><br></pre></td></tr></table></div></figure>
 
-<p><img src="./%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/udp%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84.png" alt="UDP报文结构"></p>
+<p><img src="/images/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/udp%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84.png" alt="UDP报文结构"></p>
 <p><code>检验和</code> 用于确认UDP报文段在传输过程中是否发生了改变：例如，由于链路中的噪声干扰或者存储在路由器中时引入问题。</p>
 <p><code>检验和的生成</code>：发送发对UDP报文段中的所有16比特字的和进行反码运算。求和时遇到的任何溢出都被回卷（回卷=反码运算：0-&gt;1,1-&gt;0）。得到的结果就是检验和。</p>
 <p>接收方检验：全部4个16比特字（包括检验和）加在一起，如果该分组中没有引入差错，则显然在接收方处该和将是（1111 1111 1111 1111），如果这些比特之一是0，那就表示分组中已经出现了差错。</p>
@@ -296,7 +296,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></he
           <a href="#面向连接的传输-：TCP" class="heading-link"><i class="fas fa-link"></i></a><a href="#面向连接的传输-：TCP" class="headerlink" title="面向连接的传输 ：TCP"></a>面向连接的传输 <strong>：TCP</strong></h3>
       <p><code>TCP 是运输层的面向连接的可靠的运输协议。</code></p>
 <p>报文结构：</p>
-<p><img src="./%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/tcp%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84.png" alt="TCP报文结构"></p>
+<p><img src="/images/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/tcp%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84.png" alt="TCP报文结构"></p>
 <ul>
 <li>32 比特的序号字段</li>
 <li>32 比特的确认号字段：用于实现可靠传输</li>
