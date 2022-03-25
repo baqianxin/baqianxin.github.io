@@ -81,19 +81,20 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></he
 <p><img src="https://mdn.mozillademos.org/files/16754/congestioncontrol.jpg" alt="TCP slow start"></p>
 <p>这就是为什么web性能优化需要将此初始14Kb响应作为优化重点的原因</p>
 <ul>
-<li>比如 webpack 打包文件的大小限制</li>
-</ul>
+<li>比如 webpack 打包文件的大小限制<span id="more"></span>
 
         <h3 id="拥塞控制"   >
           <a href="#拥塞控制" class="heading-link"><i class="fas fa-link"></i></a><a href="#拥塞控制" class="headerlink" title="拥塞控制"></a>拥塞控制</h3>
-      <p>拥塞控制是作用于网络，它是防止过多的包被发送到网络中，避免出现网络负载过大，网络拥塞的情况。</p>
+      </li>
+</ul>
+<p>拥塞控制是作用于网络，它是防止过多的包被发送到网络中，避免出现网络负载过大，网络拥塞的情况。</p>
 <ul>
 <li>避免发送包速率过快导致,客户端丢弃数据包</li>
 <li>包丢弃意味着，将不会有确认帧的返回。服务器把它们当做确认帧丢失。拥塞控制算法使用这个发送包和确认帧流来确定发送速率</li>
 <li>拥塞控制算法 - 拥塞状态机 - 各状态下的发包策略及状态间的变更条件</li>
 </ul>
 <p><img src="https://allen-kevin.github.io/pictures/state/20170719170346.png" alt="TCP重点系列之拥塞状态机"></p>
-<p>延伸: 移动端的拥塞控制算法<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://allen-kevin.github.io/2017/04/24/%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E4%B9%8B%EF%BC%9AVerus/" > Verus </a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>延伸: 移动端的拥塞控制算法<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://allen-kevin.github.io/2017/04/24/%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E4%B9%8B%EF%BC%9AVerus/" >Verus</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
 
         <h2 id="解析"   >
           <a href="#解析" class="heading-link"><i class="fas fa-link"></i></a><a href="#解析" class="headerlink" title="解析"></a>解析</h2>
@@ -163,7 +164,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></he
           <a href="#Style" class="heading-link"><i class="fas fa-link"></i></a><a href="#Style" class="headerlink" title="Style"></a>Style</h3>
       <p><strong>第三步:</strong> 将DOM树 和 CSSOM树组合成Render树,计算样式树或渲染树丛 DOM树的根开始构建,遍历每个可见节点</p>
 <ul>
-<li>像 <code>&lt;head&gt;</code> 标签和它的字节点 </li>
+<li>像 <code>&lt;head&gt;</code> 标签和它的字节点</li>
 <li>以及任何具有 <code>&#123; display: none;&#125;</code> 样式的节点</li>
 <li>这些标签都不会显示,也就是不会出现在Render树上.</li>
 <li>但 具有 <code>visibility: hidden</code> 的节点会出现在Render树上,因此它们会占用空间</li>
@@ -256,4 +257,4 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></he
           Paint</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Compositing"><span class="toc-number">4.4.</span> <span class="toc-text">
           Compositing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E4%BA%92"><span class="toc-number">4.5.</span> <span class="toc-text">
           交互</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E8%A7%82%E5%AF%9F"><span class="toc-number">5.</span> <span class="toc-text">
-          实验观察</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">分治</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">28</div><div class="sidebar-ov-state-item__name">归档</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>oom</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.6.2</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script></body></html>
+          实验观察</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/logo-baxi.png" alt="avatar"></div><p class="sidebar-ov-author__text">分治</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">28</div><div class="sidebar-ov-state-item__name">归档</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>oom</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.6.2</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script></body></html>
