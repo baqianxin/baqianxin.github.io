@@ -1,0 +1,435 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="计算网络自顶向下       笔记：                     网络的出现与RFC规范                           接入方式                           应用层                           SMTP 邮件发送服务协议       :将邮件通过指定我方邮件服务器投送到对方邮件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="oomcc">
+<meta property="og:url" content="http://baqianxin.github.io/2022/03/25/tcp_udp/index.html">
+<meta property="og:site_name" content="oomcc">
+<meta property="og:description" content="计算网络自顶向下       笔记：                     网络的出现与RFC规范                           接入方式                           应用层                           SMTP 邮件发送服务协议       :将邮件通过指定我方邮件服务器投送到对方邮件">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://baqianxin.github.io/2022/03/25/tcp_udp/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/udp%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://baqianxin.github.io/2022/03/25/tcp_udp/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/tcp%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84.png">
+<meta property="article:published_time" content="2022-03-25T09:55:17.140Z">
+<meta property="article:modified_time" content="2022-03-25T09:55:17.141Z">
+<meta property="article:author" content="oom">
+<meta property="article:tag" content="开放">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://baqianxin.github.io/2022/03/25/tcp_udp/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/udp%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84.png"><title>[ 文章无标题 ] | oomcc</title><link ref="canonical" href="http://baqianxin.github.io/2022/03/25/tcp_udp/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">oomcc</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">[ 文章无标题 ]</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-25</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-25</span></span></div></header><div class="post-body">
+        <h1 id="计算网络自顶向下"   >
+          <a href="#计算网络自顶向下" class="heading-link"><i class="fas fa-link"></i></a><a href="#计算网络自顶向下" class="headerlink" title="计算网络自顶向下"></a>计算网络自顶向下</h1>
+      <p>笔记：</p>
+
+        <h2 id="网络的出现与RFC规范"   >
+          <a href="#网络的出现与RFC规范" class="heading-link"><i class="fas fa-link"></i></a><a href="#网络的出现与RFC规范" class="headerlink" title="网络的出现与RFC规范"></a>网络的出现与RFC规范</h2>
+      
+        <h2 id="接入方式"   >
+          <a href="#接入方式" class="heading-link"><i class="fas fa-link"></i></a><a href="#接入方式" class="headerlink" title="接入方式"></a>接入方式</h2>
+      
+        <h2 id="应用层"   >
+          <a href="#应用层" class="heading-link"><i class="fas fa-link"></i></a><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h2>
+      
+        <h3 id="SMTP-邮件发送服务协议"   >
+          <a href="#SMTP-邮件发送服务协议" class="heading-link"><i class="fas fa-link"></i></a><a href="#SMTP-邮件发送服务协议" class="headerlink" title="SMTP 邮件发送服务协议"></a>SMTP 邮件<code>发送</code>服务协议</h3>
+      <p>:将邮件通过指定我方邮件服务器投送到对方邮件服务器中</p>
+  <figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">telnet servername 25</span><br><span class="line">serveranme 本地邮件服务器名称</span><br><span class="line">&lt;!-- 报文格式 --&gt;</span><br><span class="line">From: alice@crepes fr</span><br><span class="line">To: bob@hamburger.edu</span><br><span class="line">Subject: Searching <span class="keyword">for</span> the meaning of life.</span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="POP3-邮件接收服务"   >
+          <a href="#POP3-邮件接收服务" class="heading-link"><i class="fas fa-link"></i></a><a href="#POP3-邮件接收服务" class="headerlink" title="POP3 邮件接收服务"></a>POP3 邮件接收服务</h3>
+      <p>用于从邮件服务器上<code>拉取</code>邮件；第三版的邮局协议（Post<br>Office Protocol—Version 3）</p>
+  <figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">telnet mailServer 110</span><br><span class="line">。。。 。。。</span><br><span class="line">user bbbb</span><br><span class="line">。。。</span><br><span class="line">pass hungry</span><br><span class="line">。。。</span><br><span class="line"></span><br><span class="line">在 特许阶段 （授权）有两个主要命令 user / pass （用户名密码）</span><br><span class="line">特许阶段 后 有四个命令： list ，retr,dele ,quit</span><br></pre></td></tr></table></div></figure>
+
+<p>  POP3 服务器不会再会话中包含状态信息</p>
+<p>  POP3 协议没有给用户提供任何创建远程文件夹并为报文指派文件夹的<br>  方法</p>
+
+        <h3 id="IMAP"   >
+          <a href="#IMAP" class="heading-link"><i class="fas fa-link"></i></a><a href="#IMAP" class="headerlink" title="IMAP"></a>IMAP</h3>
+      <p>：（Internet Mail Access Protocol ),因特网邮件访问协议;<code>拉取</code>邮件内容</p>
+  <figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">IMAP 协议比POP3复杂</span><br><span class="line">IMAP 服务器把每个报文与一个文件夹联系起来</span><br><span class="line">IMAP 服务器维护了每一个客户端的状态</span><br><span class="line">IMAP 服务允许获取邮件的摘要信息，避免大邮件的传输</span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="HTTP"   >
+          <a href="#HTTP" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h3>
+      <p>：超文本传输协议，<code>拉取</code>邮件内容；基于Web的邮件服务（QQ，GMAIL,163）,使用HTTP获取邮件（用户代理-浏览器 ： 邮件服务器），后段依然适用 SMTP 协议发送邮件</p>
+
+        <h3 id="DNS"   >
+          <a href="#DNS" class="heading-link"><i class="fas fa-link"></i></a><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h3>
+      <p>: DNS协议是应用层协议，其原因在于：</p>
+<p>  ① 使用客户-服务器模式运行在通信的端系统之间；</p>
+<p>  ② 在通信的端系统之间通过下面的端到端运输协议来传送DNS报文</p>
+<p>  特殊之处在于：DNS协议通常是由其他应用层协议所使用的；DNS额外的功能</p>
+<ul>
+<li>主机别名</li>
+<li>邮件服务器别名</li>
+<li>负载分配</li>
+</ul>
+<p>DNS 服务单点核心问题：</p>
+<ul>
+<li>单点故障</li>
+<li>通信容量（带宽限制）</li>
+<li>远距离（跨网时延）</li>
+<li>数据维护（数据量大）</li>
+</ul>
+<p>为解决这些问题，造就了 分布式互联网服务的 范例 DNS 服务</p>
+<ol>
+<li><p>分布式，层次数据库</p>
+<ul>
+<li><p>根域名服务 ： 12（13）个机构-1000多个节点遍布世界。中国有26个根域名服务器节点。I/L/J/K/F</p>
+</li>
+<li><p>顶级域名服务：顶级域名（com,org,edu…  通用顶级域名&amp;国家顶级域名 .cn,.fr.de）</p>
+</li>
+<li><p>权威服务：域名的最终解释服务，具体的IP映射关系</p>
+<p>另一类重要的DNS服务器：本地DNS服务器 （local DNS server）</p>
+<p>一般由ISP(运营商)分配，指的是 用户设备上配置的DNS服务器IP地址</p>
+<p>实践中：递归查询（用户到本地DNS ） / 迭代查询 （本地DNS 到各个级别的域名服务器都是迭代查询）</p>
+</li>
+</ul>
+</li>
+<li><p>DNS缓存</p>
+<ul>
+<li>DNS 查询响应包被缓存，权威服务IP也可以被缓存</li>
+<li>事实上：因为DNS缓存，除了少数DNS查询外，根服务器一般都被绕过了</li>
+</ul>
+</li>
+<li><p>DNS记录与报文 -［RFC 1034； RFC 1035］</p>
+<ul>
+<li><p>记录：（Name,Value,Type,TTL）</p>
+</li>
+<li><p>查询报文 /  响应报文</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1. 首部区域</span><br><span class="line">12字节 ： 标识符，      标识</span><br><span class="line">          查询数，      应答记录数</span><br><span class="line">          权威应答数，   附加应答数</span><br><span class="line">2. 查询信息区域</span><br><span class="line">3. 查询结果区域</span><br><span class="line">4. 权威区域</span><br><span class="line">5. 附加区域</span><br></pre></td></tr></table></div></figure>
+</li>
+</ul>
+</li>
+<li><p>DNS的脆弱性</p>
+<ul>
+<li><strong><code>DDoS</code> 攻击 ：</strong></li>
+<li>攻击<code>根域名服务</code>：2002 年 ICMP ping报文负载；更为有效 <code>DDoS</code>攻击将是向 <code>顶级域名服务</code>发 大量的DNS 求。顶级域名服务器不像根服务器 样容易<code>绕过</code>。但是这种攻击 严 性通过本 地DNS服务器中的缓存技术可将 分地被缓解</li>
+<li><strong>中间人攻击:</strong></li>
+<li><code>缓存投毒</code>：在中 人攻击中 攻击 截 来 主机的请求 并 回伪造的回答。在DNS毒害攻击中 攻击 向一台DNS服务器发 伪造的回答, 使服务器在它的缓存中接收伪造的记录。</li>
+</ul>
+</li>
+</ol>
+
+        <h3 id="P2P-文件分发"   >
+          <a href="#P2P-文件分发" class="heading-link"><i class="fas fa-link"></i></a><a href="#P2P-文件分发" class="headerlink" title="P2P 文件分发"></a>P2P 文件分发</h3>
+      <ul>
+<li><p>文件分块传输</p>
+</li>
+<li><p>最稀缺优先规则</p>
+</li>
+<li><p>分布式散列表 DHT</p>
+</li>
+<li><p><code>视频流：</code></p>
+</li>
+<li><p>HTTP流 和 DASH （ Dynamic Adaptive<br>Streaming over HTTP： 为经HTTP的动态适应性流 ） - manifest file 告示文件：包含各个版本的视频url，允许客户端选择不同码率 不同URL来播放（速率选择算法）</p>
+</li>
+<li><p><code>内容分发网：</code></p>
+</li>
+<li><p>CDN 服务</p>
+</li>
+<li><p>主动利用 DNS 截获或重定向请求：加速</p>
+</li>
+<li><p>Google 的专用网络与CDN基础设施：具有三个等级的服务器集群。</p>
+<pre><code>1. 14个“ 万数据中心” 其中8个位于北 4个位于欧洲 2个位于亚洲[Google</code></pre><p>Locations 2016],每个数据中心具有10万台量级的服务器。 些“ 万数据中心”<br>负责服务于动态 并且 常是个性化 内容 包括搜索结果和Gmail报文。</p>
+<pre><code>2. IXP中大约50个集群分布于全 其中每个集群由100-500台服务器组成。这些集群负责服务于 静态内容 包括YouTube视频
+3. 数以百计的“深入 enter-deep M集群位于一个接入ISP中。这里一个集群通</code></pre><p>〜 常 位于一个机架上 数十台服务器 成。 些“深入服务器”执 TCP分岔 参 3. 7 并服务于 态内容[Chen 2011],包括体 搜索结果 Web<br>页的静态 分。</p>
+<p>  Google云服务：当某用户进行搜… …<br>  总的来说：除了本地ISP，Google云服务很大程度上是由独立于公共网络 的 网络基础设施提供的</p>
+</li>
+</ul>
+
+        <h3 id="套接字编程-Socket-golang-代码"   >
+          <a href="#套接字编程-Socket-golang-代码" class="heading-link"><i class="fas fa-link"></i></a><a href="#套接字编程-Socket-golang-代码" class="headerlink" title="套接字编程 Socket: golang 代码"></a>套接字编程 Socket: golang 代码</h3>
+      <ul>
+<li>TCP （粘包问题，自编码/解码）</li>
+<li>UDP</li>
+</ul>
+
+        <h2 id="传输层"   >
+          <a href="#传输层" class="heading-link"><i class="fas fa-link"></i></a><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h2>
+      <p> TCP 和 UDP 运输层协议</p>
+<p> 运输层协议将要发送的数据转换为运输层的<code>报文段</code>（segment）。<br> 实现的方法可能是将数据划分为较小的块，并为每块加上一个运输层首部以生成运输层<code>报文段</code>。<br> 传递给<code>网络层</code>后被封装为<code>网络层</code>数据包，并发送到端系统中。<br> 网络路由器仅作用于该数据报的<code>网络层</code>字段；即它们不检查封装在该数据报的运输层<code>报文段</code>的字段。在接收端，<code>网络层</code>从数据报中提取运输层<code>报文段</code>，并将该<code>报文段</code>向上交给运输层。运输层则处理接收到的<code>报文段</code>，使该<code>报文段</code>中的数据为接收应用进程使用。</p>
+<p> 数据的完整传输：</p>
+<ol>
+<li>应用层：数据文件</li>
+<li>传输层：报文段</li>
+<li>网络层：数据包</li>
+<li>数据链路层：MAC帧</li>
+<li>物理层：Bit 流</li>
+</ol>
+
+        <h3 id="运输层的多路复用与多路分解"   >
+          <a href="#运输层的多路复用与多路分解" class="heading-link"><i class="fas fa-link"></i></a><a href="#运输层的多路复用与多路分解" class="headerlink" title="运输层的多路复用与多路分解"></a>运输层的多路复用与多路分解</h3>
+      <p>  在接收端，运输层检查套接字字段标识（端口号），将报文段定向到该套接字。将运输层报文段中的数据交付到正确的套接字的工作称为 <strong>多路分解</strong> (demultiplexing)</p>
+<p>  在源主机从不同套接字中收集数据块，并为每个数据块封装上首部信息（这将在以后用于分解）从而生成报文段，然后将报文段传递到网络层，这些工作称为 <strong>多路复用</strong> (multiplexing)</p>
+<ul>
+<li><p>无连接多路复用与分解（上）</p>
+<ul>
+<li>UDP 套接字由 二元组 标识：目的地IP，目的地端口；分解到相应的套接字</li>
+</ul>
+</li>
+<li><p>面向连接的多路复用与分解</p>
+<ul>
+<li>TCP 四元组：源IP，源端口，目的地IP，目的地端口；确定分解到相应的套接字</li>
+<li>TCP 报文段携带了初始创建链接的请求，会分解到新的套接字</li>
+</ul>
+<p>安全性: 寻找突破口</p>
+<p>端口扫描： nmap, 对于TCP/UDP，nmap顺序扫描端口，创建TCP链接 或发送 UDP报文段。</p>
+</li>
+</ul>
+
+        <h3 id="无连接传输：-UDP"   >
+          <a href="#无连接传输：-UDP" class="heading-link"><i class="fas fa-link"></i></a><a href="#无连接传输：-UDP" class="headerlink" title="无连接传输： UDP"></a>无连接传输： UDP</h3>
+      <p>  DNS 是使用UDP的应用层协议的例子。</p>
+<ul>
+<li><p><strong>特点：</strong></p>
+</li>
+<li><p>发送什么数据/何时发送的应用层控制更为精细：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. UDP传输直接对打包进UDP报文段，并立即传递给网络层。</span><br><span class="line">2. 另一方面 TCP 有一个拥塞控制机制：用来遏制极端拥塞情况下的发送方。重发数据报文段知道确认接受，而忽略交付需要时间。</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p>无需连接建立：<br><code>相比TCP少了三次握手耗时</code></p>
+</li>
+<li><p>无连接状态：<br><code>无需维护连接状态，拥塞控制等，一般能支持更多的活跃用户连接</code></p>
+</li>
+<li><p>分组首部开销小</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">每个TCP报文段都有20字节的首部开销，而UDP仅有8字节的开销。</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p><strong>应用中的问题：</strong></p>
+</li>
+</ul>
+<p>现在通常在 UDP传输协议书运行多媒体应用，但是有争议的；在用户都适用UDP传输用高比特率视频的情况下，不做拥塞控制会导致路由器中有大量的数据分组溢出，以至于很少的UDP分组数据能成功的通过源到目的地的路径传输。</p>
+<p>另外，无控制的UDO发送方引起的搞丢包率将引起TCP发送方大大地减少他们的速率。因此，UDO中取少拥塞控制能够导致UDP发送方和接受方之间的高丢包率，并挤垮TCP会话.</p>
+<p>现在有很多研究人员提出了新的机制：促使所有的数据源（包括UDP源）执行自适应的拥塞控制。</p>
+
+        <h3 id="UDP-与-可靠性传输"   >
+          <a href="#UDP-与-可靠性传输" class="heading-link"><i class="fas fa-link"></i></a><a href="#UDP-与-可靠性传输" class="headerlink" title="UDP 与 可靠性传输"></a>UDP 与 可靠性传输</h3>
+      <p>使用 UDP传输协议的应用 是可能实现可靠数据传输的。通过在应用程序自身中建立可靠性机制来完成：如，增加确认与重传机制来实现.UDP 协议本身是不可靠的传输协议，只有确认报文段的完整性 检验和 。</p>
+<ul>
+<li><p>运输层UDP报文段结构：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. 套接字有唯一标识符</span><br><span class="line">2. 每个报文段有特殊字段来指示该报文段所要交付到的套接字</span><br><span class="line"></span><br><span class="line">结构：(UDP报文段)</span><br><span class="line">4 字节 = 32 比特  : 源端口号（16） ｜ 目的端口（16）其大小在0 ~65535</span><br><span class="line">        :  其他首部字段 （长度｜检验和）</span><br><span class="line">        :  应用数据（报文）</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="./%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/udp%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84.png" alt="UDP报文结构"></p>
+<p><code>检验和</code> 用于确认UDP报文段在传输过程中是否发生了改变：例如，由于链路中的噪声干扰或者存储在路由器中时引入问题。</p>
+<p><code>检验和的生成</code>：发送发对UDP报文段中的所有16比特字的和进行反码运算。求和时遇到的任何溢出都被回卷（回卷=反码运算：0-&gt;1,1-&gt;0）。得到的结果就是检验和。</p>
+<p>接收方检验：全部4个16比特字（包括检验和）加在一起，如果该分组中没有引入差错，则显然在接收方处该和将是（1111 1111 1111 1111），如果这些比特之一是0，那就表示分组中已经出现了差错。</p>
+</li>
+</ul>
+
+        <h3 id="可靠数据传输原理"   >
+          <a href="#可靠数据传输原理" class="heading-link"><i class="fas fa-link"></i></a><a href="#可靠数据传输原理" class="headerlink" title="可靠数据传输原理"></a>可靠数据传输原理</h3>
+      <ol>
+<li><p>经完全可靠信道的可靠数据传输：rdt1.0</p>
+</li>
+<li><p>经具有比特差错信道的可靠数据传输： rdt2.0</p>
+<p> 自动重传请求 ARQ协议；ARQ协议宁外还需要三种协议功能来处理存在比特差错的情况</p>
+<ol>
+<li>差错检测</li>
+<li>接收方反馈： 肯定确认/否定确认</li>
+<li>重传。接收方收到差错分组是，发送方将重传</li>
+</ol>
+<ul>
+<li>停等协议 stop-and-wait</li>
+<li>发送分组序号</li>
+<li>冗余分组</li>
+<li>冗余ACK</li>
+</ul>
+</li>
+<li><p>经具有比特差错的丢包信道的可靠数据传输：rdt3.0</p>
+<ol>
+<li>检验和，序号，ACK分组和重传</li>
+<li>冗余数据分组（提供数据的同时，被序号处理产生的问题）</li>
+<li>基于时间的重传机制： 倒计数定时器，在一个鹅给定的时间量过期后，可中断发送方<ul>
+<li>每次发送一个分组时（包括第一次分组和重传分组），启动一个定时器</li>
+<li>响应定时器中断</li>
+<li>终止定时器</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<p>现象：</p>
+<ul>
+<li>无丢包操作：</li>
+<li>分组丢失</li>
+<li>丢失ACK</li>
+<li>过早超时</li>
+</ul>
+<p>总结： 在检验和，序号，定时器，肯定/否定确认这些技术中，我们完成了一个可靠数据传输协议。</p>
+<p><strong>没有搞太明白！！！</strong></p>
+
+        <h3 id="流水线可靠数据传输协议"   >
+          <a href="#流水线可靠数据传输协议" class="heading-link"><i class="fas fa-link"></i></a><a href="#流水线可靠数据传输协议" class="headerlink" title="流水线可靠数据传输协议"></a>流水线可靠数据传输协议</h3>
+      <p>rdt3.0 是一个功能正确的协议，但性能不够优秀，核心原因在于它是一个停等协议（stop-and-wait）</p>
+<p>解决方法：<br>不以停等的方式运行，允许发送方发送多个分组而无需等待确认。如在等待去人之前发送三个报文，利用率也就提高了三倍。因为许多从发送方 向 接收方输送的分组可以被看成是填充到一条流水线中，故这种技术被称为流水线（pipelining）</p>
+<p>停等操作：<br>  1: t=0 ； 2: t=L/R<br>  首个分组的最后一个比特到达，发送ACK<br>  ACK到达，发送下一个分组 t=RTT+L/R</p>
+<p>停等+流水线发送：<br>  1: t=0 ; 2: t=L/R<br>  在RTT 时间内 ，以n<em>组的方式发送<br>  接收方顺序确认，当n</em>组确认后，开始发送下一个n*分组</p>
+<p>产生：</p>
+<ul>
+<li>回退N步协议 GNB (go-back-n) = 滑动窗口协议（sliding-window protocol）</li>
+<li>选择重传协议 SR (Selective Repeat)</li>
+</ul>
+<p>优秀的可靠传输机制：窗口，流水线（允许未确认情况发送N组数据）；窗口长度根据接收方接受和缓存报文的能力，网络中的拥塞程度或者两者情况来进行设置</p>
+
+        <h3 id="面向连接的传输-：TCP"   >
+          <a href="#面向连接的传输-：TCP" class="heading-link"><i class="fas fa-link"></i></a><a href="#面向连接的传输-：TCP" class="headerlink" title="面向连接的传输 ：TCP"></a>面向连接的传输 <strong>：TCP</strong></h3>
+      <p><code>TCP 是运输层的面向连接的可靠的运输协议。</code></p>
+<p>报文结构：</p>
+<p><img src="./%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/tcp%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84.png" alt="TCP报文结构"></p>
+<ul>
+<li>32 比特的序号字段</li>
+<li>32 比特的确认号字段：用于实现可靠传输</li>
+<li>16 比特的接收窗口字段：该字段用于流量控制，表示接收方愿意接受的字节数量</li>
+<li>4 比特的首部长度字段：该字段指示了以32 比特的字为单位的TCP首部长度。长度可变（通常选项字段未空，TCP首部的典型长度为20字节）</li>
+<li>可选与变长的选项字段：用于发送发与接收方协商最大的报文段长度 MSS 时，或在高速网络环境下用作窗口调节因子时使用。</li>
+<li>6 比特的标志字段： ACK 比特用于确认字段中的值时有效的，即该报文段包括一个对已被成功接受报文段的确认。RST,SYN 和 FIN用于连接的建立与拆除。在明确拥塞通告中使用了CWR 和 ECE。</li>
+</ul>
+<p>序号与确认号：</p>
+<p>TCP连接状态详解</p>
+<p>服务端 LISTEN： 侦听来自远方的TCP端口的连接请求</p>
+<p> 客户端 SYN-SENT： 发送连接请求后等待匹配的连接请求</p>
+<p>服务端 SYN-RECEIVED：收到和发送一个连接请求后等待对方对连接请求的确认</p>
+<p>客户端/服务端 ESTABLISHED： 代表一个打开的连接</p>
+<p> 客户端 FIN-WAIT-1： 等待远程TCP连接中断请求，或先前的连接中断请求的确认</p>
+<p> 客户端 FIN-WAIT-2： 从远程TCP等待连接中断请求</p>
+<p>服务端 CLOSE-WAIT： 等待从本地用户发来的连接中断请求</p>
+<p> 客户端 CLOSING： 等待远程TCP对连接中断的确认</p>
+<p>服务端 LAST-ACK： 等待原来的发向远程TCP的连接中断请求的确认</p>
+<p> 客户端 TIME-WAIT： 等待足够的时间以确保远程TCP接收到连接中断请求的确认</p>
+<p>客户端。服务端 CLOSED： 没有任何连接状态</p>
+<p>三次握手和编程的关系</p>
+<ol>
+<li>服务器通过 socket(),bind(),listen() 来完成 CLOSE 到 LISTEN 状态的转化。称为被动打开，打开后使用 accept()<br>阻塞，等待客户端请求。</li>
+<li>客户端通过connect()进行主动打开，1.发送 SYN 包</li>
+<li>服务端收到 并 回复 2. SYN+ACK 进行确认</li>
+<li>客户端收到 服务端确认 SYN+ACK ，并 发送 3. ACK 客户端确认。connect()返回成功</li>
+<li>服务端收到客户端确认 accept()</li>
+</ol>
+<p>三次握手异常：</p>
+<ol>
+<li><p>第一次丢包：connect()是阻塞的，如果无法发送到服务端，那么会进行重试等待，通过设置 SO_SNDTIMEO 来设置超市等待时间</p>
+</li>
+<li><p>第二次握手丢包：对于用户来说发包了没有回包还是 connect() 超时；<br>对于服务端来说，由于收不到第三次请求，所以会进入等待重传，知道多次重传失败后，关闭半连接；<br>a) 半连接的等待状态。<br>b) 常见的DDoS就是 发送第一次握手数据后，关闭连接，将服务器的额半连接队列占满。</p>
+</li>
+<li><p>第三次握手丢包： 发送第三次数据包后，客户端已经直接进入 ESTABLISHED 状态。<br>这时服务端与客户端的状态不同步了，这时候服务端会进行多次重发，一旦客户端再次收到 SYN+ACK(第二次握手请求)，会再次确认。<br>不过如果第三次握手一直失败，则会出现，客户端已建立连接，服务端关闭连接的情况。<br>随后一旦客户端想服务器发送数据，则会收到一条RST回应,告诉客户端连接已经重置，需要重新进行三次握手<br>a) RST 与 SIGPIPE 信号</p>
+</li>
+</ol>
+<p>四次挥手</p>
+<ol>
+<li><p>CLOSE_WAIT: 客户端表示不接受数据了，但是服务端不一定没数据要发了，<br>这段时间主要用于给杜芳发送必要数据，对自己的数据进行收尾，所有工作结束之后掉用 close() ,发送 FIN，等待LAST_ACK</p>
+</li>
+<li><p>TIME_WAIT：<br>a) 实现TCP全双工连接的可靠性：LAST_ACK丢失，对方重发可接受到。<br>b) 允许老的网络分组在网络中消逝；</p>
+</li>
+</ol>
+<p>TCP的同时打开 / 同时关闭</p>
+<p>tcp 粘包现象：</p>
+<p>主要原因就是tcp数据传递模式是流模式，在保持长连接的时候可以进行多次的收和发。</p>
+<p>“粘包”可发生在发送端也可发生在接收端：</p>
+<ol>
+<li><p>由Nagle算法造成的发送端的粘包</p>
+</li>
+<li><p>接收端接收不及时造成的接收端粘包</p>
+</li>
+</ol>
+<p>粘包解决：</p>
+<p>出现”粘包”的关键在于接收方不确定将要传输的数据包的大小，因此我们可以对数据包进行封包和拆包的操作。</p>
+<p>封包：封包就是给一段数据加上包头，这样一来数据包就分为包头和包体两部分内容了(过滤非法包时封包会加入”包尾”内容)。包头部分的长度是固定的，并且它存储了包体的长度，根据包头长度固定以及包头中含有包体长度的变量就能正确的拆分出一个完整的数据包。</p>
+<p>我们可以自己定义一个协议，比如数据包的前4个字节为包头，里面存储的是发送的数据的长度。</p>
+<p><strong>拥塞控制:</strong></p>
+<ol>
+<li>慢启动：1=》2=》4=》8 个包</li>
+<li>拥塞避免</li>
+<li>快速恢复</li>
+</ol>
+<p>当前拥塞控制观察丢失分组情况来推断拥塞。</p>
+<p>新一代：<code>明确拥塞通告</code> (<strong>ECN</strong>) ：网络辅助拥塞控制</p>
+<p>在网络层中使用 IP 数据首部的服务类型字段中的 两个比特（四个可能的值）被用于 ECN</p>
+<p>新的传输层协议：</p>
+<ul>
+<li>DCCP 数据报拥塞控制协议（Datagram Congestion Control Protocol, DCCP） [ RFC 4340 ]</li>
+<li>QUIC （ Quick UDP Internet Connections）协议<br>[Iyengar 2016]</li>
+<li>DCTCP （数据中心TCP） ［Alizadeh 2010］</li>
+<li>SCTP 流控制传输协议（Stream Control Transmission Protocol, SCTP） ［ RFC 4960, RFC 3286 ]</li>
+</ul>
+<p>唯有未来才能告诉我们DCCP、SCTP、QUIC或TFRC是否能得到广泛实施。虽然这些 协议明确地提供了超过TCP和UDP的强化能力，但是多年来已经证明了 TCP和UDP自身<br>是“足够好”的。是否“更好”将胜岀“足够好”，这将取决于技术、社会和商业考虑的复杂组合</p>
+
+        <h2 id="网络层"   >
+          <a href="#网络层" class="heading-link"><i class="fas fa-link"></i></a><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h2>
+      
+        <h3 id="数据平面"   >
+          <a href="#数据平面" class="heading-link"><i class="fas fa-link"></i></a><a href="#数据平面" class="headerlink" title="数据平面"></a>数据平面</h3>
+      <p>网络层中每台路由器的功能，该数据平面功能决定到达路由器输入链 路之一的数据报（即网络层的分组）如何转发到该路由器的输出链路之一</p>
+<p>IP转发</p>
+<p>通用转发</p>
+<p>IPv4 IPv6协议及其寻址</p>
+<ul>
+<li><p>DHCP 动态主机配置协议，第一跳路由器（默认网关）配置，本地DNS服务器地址</p>
+<ul>
+<li>DHCP 发现报文 客户端（新机器）</li>
+<li>DHCP 提供报文 服务端</li>
+<li>DHCP 请求报文 客户端发送</li>
+<li>DHCP ACK报文 服务端发送</li>
+</ul>
+<p>基于移动节点与子网之间的单一永久地址：移动IP</p>
+</li>
+<li><p>网络地址转换 NAT</p>
+</li>
+</ul>
+
+        <h3 id="控制平面"   >
+          <a href="#控制平面" class="heading-link"><i class="fas fa-link"></i></a><a href="#控制平面" class="headerlink" title="控制平面"></a>控制平面</h3>
+      <p>即网络范围的逻辑，该控制平面功能 控制数据报沿着从源主机到目的主机的端到端路径中路由器之间的路由方式</p>
+<p>路由选择算法：</p>
+<ul>
+<li>OSPF 协议<ul>
+<li>AS 自治域 内的最短开放路径算法</li>
+</ul>
+</li>
+<li>BGP 协议<ul>
+<li>跨AS 自治域时<br>SDN 控制器</li>
+</ul>
+</li>
+</ul>
+<p>软件定义网络（Software- Defined Networking, SDN）通过将这些控制平面功能作为<br>一种单独服务，明确地分离数据平面和控制平面，控制平面功能通常置于一台远程“控制 器”中</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://baqianxin.github.io">oom</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://baqianxin.github.io/2022/03/25/tcp_udp/">http://baqianxin.github.io/2022/03/25/tcp_udp/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><nav class="post-paginator paginator"><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/28/pandas%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/"><span class="paginator-prev__text">pandas内存优化</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E7%BD%91%E7%BB%9C%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B"><span class="toc-number">1.</span> <span class="toc-text">
+          计算网络自顶向下</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E7%9A%84%E5%87%BA%E7%8E%B0%E4%B8%8ERFC%E8%A7%84%E8%8C%83"><span class="toc-number">1.1.</span> <span class="toc-text">
+          网络的出现与RFC规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A5%E5%85%A5%E6%96%B9%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text">
+          接入方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%B1%82"><span class="toc-number">1.3.</span> <span class="toc-text">
+          应用层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SMTP-%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81%E6%9C%8D%E5%8A%A1%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.1.</span> <span class="toc-text">
+          SMTP 邮件发送服务协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#POP3-%E9%82%AE%E4%BB%B6%E6%8E%A5%E6%94%B6%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.3.2.</span> <span class="toc-text">
+          POP3 邮件接收服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IMAP"><span class="toc-number">1.3.3.</span> <span class="toc-text">
+          IMAP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTTP"><span class="toc-number">1.3.4.</span> <span class="toc-text">
+          HTTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DNS"><span class="toc-number">1.3.5.</span> <span class="toc-text">
+          DNS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#P2P-%E6%96%87%E4%BB%B6%E5%88%86%E5%8F%91"><span class="toc-number">1.3.6.</span> <span class="toc-text">
+          P2P 文件分发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B-Socket-golang-%E4%BB%A3%E7%A0%81"><span class="toc-number">1.3.7.</span> <span class="toc-text">
+          套接字编程 Socket: golang 代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82"><span class="toc-number">1.4.</span> <span class="toc-text">
+          传输层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%BE%93%E5%B1%82%E7%9A%84%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E4%B8%8E%E5%A4%9A%E8%B7%AF%E5%88%86%E8%A7%A3"><span class="toc-number">1.4.1.</span> <span class="toc-text">
+          运输层的多路复用与多路分解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E8%BF%9E%E6%8E%A5%E4%BC%A0%E8%BE%93%EF%BC%9A-UDP"><span class="toc-number">1.4.2.</span> <span class="toc-text">
+          无连接传输： UDP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UDP-%E4%B8%8E-%E5%8F%AF%E9%9D%A0%E6%80%A7%E4%BC%A0%E8%BE%93"><span class="toc-number">1.4.3.</span> <span class="toc-text">
+          UDP 与 可靠性传输</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E9%9D%A0%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8E%9F%E7%90%86"><span class="toc-number">1.4.4.</span> <span class="toc-text">
+          可靠数据传输原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E6%B0%B4%E7%BA%BF%E5%8F%AF%E9%9D%A0%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.4.5.</span> <span class="toc-text">
+          流水线可靠数据传输协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%A2%E5%90%91%E8%BF%9E%E6%8E%A5%E7%9A%84%E4%BC%A0%E8%BE%93-%EF%BC%9ATCP"><span class="toc-number">1.4.6.</span> <span class="toc-text">
+          面向连接的传输 ：TCP</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82"><span class="toc-number">1.5.</span> <span class="toc-text">
+          网络层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%B9%B3%E9%9D%A2"><span class="toc-number">1.5.1.</span> <span class="toc-text">
+          数据平面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2"><span class="toc-number">1.5.2.</span> <span class="toc-text">
+          控制平面</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">分治</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">29</div><div class="sidebar-ov-state-item__name">归档</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>oom</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.6.2</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script></body></html>
