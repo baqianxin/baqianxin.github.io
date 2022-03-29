@@ -43,7 +43,8 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></he
           <a href="#问题原因" class="heading-link"><i class="fas fa-link"></i></a><a href="#问题原因" class="headerlink" title="问题原因"></a>问题原因</h2>
       <p> 基于字节流的传输协议，会有控制算法 拆分，组合应用层协议的数据</p>
 <p> 应用层协议 没有定义 消息的边界 导致 接收方 无法 拼接数据</p>
-<p>同时 UDP / 网络层IP协议 等不存在粘包问题的原因是：<br>  基于 数据包 / 报文的传输与接受组合</p>
+<p>同时 UDP / 网络层IP协议 等不存在粘包问题的原因是：<br>  UDP 对应用层交下来的报文，既不合并，也不拆分，而是保留这些报文的边界。这就涉及到包大小确定：<br>  UDP包允许发送最大值 64K,需要应用层来手动处理数据问题，但是TCP不存在包大小限制。</p>
+<p>  IP协议 基于 数据包 拆分为 IP报文的传输与接收是有边界协议的；并且数据在TCP传输层就会考虑到 IP报文的大小限制，主动分段处理。<br>  IP分片一般用在UDP</p>
 <span id="more"></span>
 
         <h2 id="TCP下的延迟发包算法：Nagle"   >
